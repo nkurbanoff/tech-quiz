@@ -32,6 +32,9 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 	onNext,
 	onGoHome,
 }) => {
+	const correctIndex = currentQuestion.correct;
+	const correctLetter = String.fromCharCode(65 + correctIndex);
+	const correctText = currentQuestion.options[correctIndex];
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-6">
 			<div className="max-w-3xl mx-auto">
@@ -66,12 +69,12 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 								onClick={() => !showExplanation && onAnswer(index)}
 								disabled={showExplanation}
 								className={`w-full p-4 rounded-xl text-left transition-all ${showExplanation
-										? index === currentQuestion.correct
-											? 'bg-emerald-50 border-2 border-emerald-500'
-											: selectedAnswer === index
-												? 'bg-red-50 border-2 border-red-500'
-												: 'bg-slate-50'
-										: 'bg-slate-50 hover:bg-slate-100 hover:shadow-md'
+									? index === currentQuestion.correct
+										? 'bg-emerald-50 border-2 border-emerald-500'
+										: selectedAnswer === index
+											? 'bg-red-50 border-2 border-red-500'
+											: 'bg-slate-50'
+									: 'bg-slate-50 hover:bg-slate-100 hover:shadow-md'
 									}`}
 							>
 								<div className="flex items-center gap-3">
@@ -104,6 +107,16 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 						<p className="text-slate-700 leading-relaxed mb-4">
 							{currentQuestion.explanation}
 						</p>
+
+						{!isCorrect && (
+							<div className="text-slate-700 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+								<div className="font-semibold mb-1">Правильный ответ:</div>
+								<div>
+									<span className="font-bold text-slate-800">{correctLetter}.</span>
+									<span className="ml-2 text-slate-800">{correctText}</span>
+								</div>
+							</div>
+						)}
 
 						<button
 							onClick={onNext}
