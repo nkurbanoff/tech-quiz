@@ -1,0 +1,55 @@
+import React from 'react';
+import { RefreshCw } from 'lucide-react';
+import type { Category } from '../types/quiz.types';
+
+interface HomeScreenProps {
+	categories: Category[];
+	questionsCount: Record<string, number>;
+	onStartQuiz: (categoryId: string) => void;
+	onUpdateData: () => void;
+}
+
+/**
+ * Главный экран с выбором категории
+ */
+export const HomeScreen: React.FC<HomeScreenProps> = ({
+	categories,
+	questionsCount,
+	onStartQuiz,
+	onUpdateData,
+}) => {
+	return (
+		<div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-6">
+			<div className="max-w-4xl mx-auto">
+				<div className="text-center mb-8">
+					<h1 className="text-4xl font-bold text-slate-800 mb-2">Tech Quiz</h1>
+					<p className="text-slate-600">Выбери категорию для прохождения викторины</p>
+				</div>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+					{categories.map(cat => (
+						<button
+							key={cat.id}
+							onClick={() => onStartQuiz(cat.id)}
+							className={`${cat.color} p-8 rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200`}
+						>
+							<div className="text-6xl mb-3">{cat.icon}</div>
+							<div className="text-2xl font-bold text-white mb-2">{cat.name}</div>
+							<div className="text-white/90">
+								{questionsCount[cat.id] || 0} вопросов
+							</div>
+						</button>
+					))}
+				</div>
+
+				<button
+					onClick={onUpdateData}
+					className="w-full bg-white/80 backdrop-blur-sm text-slate-700 p-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white transition-all shadow-md hover:shadow-lg"
+				>
+					<RefreshCw size={20} />
+					Обновить вопросы
+				</button>
+			</div>
+		</div>
+	);
+};

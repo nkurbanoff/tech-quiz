@@ -1,0 +1,26 @@
+{
+  "name": "Tech Quiz - Подготовка к собеседованиям",
+  "short_name": "TechQuiz",
+  "description": "Приложение для подготовки к техническим собеседованиям по C#, Angular, PostgreSQL и MS SQL",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#64748b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "lang": "ru-RU"
+}

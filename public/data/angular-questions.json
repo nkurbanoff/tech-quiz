@@ -1,0 +1,1307 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-15",
+  "category": "angular",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Что такое директива в Angular?",
+      "options": [
+        "Компонент без шаблона",
+        "Класс, который изменяет поведение элементов DOM",
+        "Сервис для работы с HTTP",
+        "Модуль для роутинга"
+      ],
+      "correct": 1,
+      "explanation": "Директива — класс с декоратором @Directive, добавляющий поведение к элементам DOM. Бывают структурные (*ngIf, *ngFor) и атрибутные (ngClass, ngStyle).",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "question": "Для чего используется RxJS в Angular?",
+      "options": [
+        "Для стилизации компонентов",
+        "Для работы с асинхронными потоками данных",
+        "Для тестирования приложения",
+        "Для компиляции TypeScript"
+      ],
+      "correct": 1,
+      "explanation": "RxJS обеспечивает декларативную работу с асинхронными потоками через Observables (HTTP, события, формы, роутинг).",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "question": "Что такое Angular CLI?",
+      "options": [
+        "Средство для тестирования без сборки",
+        "Инструмент командной строки для создания и управления проектами",
+        "Runtime оптимизатор JavaScript",
+        "Расширение для VS Code"
+      ],
+      "correct": 1,
+      "explanation": "Angular CLI помогает генерировать код (components, services), выполнять сборку, тесты, линтинг и оптимизации (ng new, ng serve, ng build).",
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "question": "Что делает декоратор @Component?",
+      "options": [
+        "Определяет сервис и его область",
+        "Связывает класс с метаданными шаблона, стилей и селектора",
+        "Оптимизирует бандл при сборке",
+        "Запускает тестовый раннер"
+      ],
+      "correct": 1,
+      "explanation": "@Component связывает класс с селектором, шаблоном (template/templateUrl), стилями (styles/styleUrls) и изменяет его роль на компонент.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "question": "Что делает директива *ngFor?",
+      "options": [
+        "Повторяет HTTP-запрос",
+        "Итерирует коллекцию и создает элементы по шаблону",
+        "Оптимизирует Change Detection",
+        "Выполняет парсинг JSON"
+      ],
+      "correct": 1,
+      "explanation": "*ngFor — структурная директива, размножающая шаблон для каждой записи коллекции (let item of items).",
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "question": "Какой пакет отвечает за HTTP-клиент?",
+      "options": [
+        "@angular/common/http",
+        "@angular/router",
+        "@angular/platform-browser",
+        "@angular/forms"
+      ],
+      "correct": 0,
+      "explanation": "Модуль HttpClientModule из @angular/common/http предоставляет HttpClient для работы с HTTP-запросами.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "question": "Для чего используется ngOnInit?",
+      "options": [
+        "Для подписки на Observable до конструктора",
+        "Хук жизненного цикла для инициализации после создания input-связей",
+        "Для уничтожения компонента",
+        "Для запуска сборки"
+      ],
+      "correct": 1,
+      "explanation": "ngOnInit вызывается один раз после установки входных свойств и подходит для начальной загрузки данных.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "question": "Что такое сервис (service) в Angular?",
+      "options": [
+        "Класс для изменения DOM напрямую",
+        "Переиспользуемый класс бизнес-логики или доступа к данным",
+        "Только объект конфигурации роутера",
+        "Специфичная сущность для шаблонов"
+      ],
+      "correct": 1,
+      "explanation": "Сервис — класс без UI, инжектируемый через DI для бизнес-логики, API-вызовов, кэша и т.п.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "question": "Что делает pipe в Angular?",
+      "options": [
+        "Собирает бандл",
+        "Трансформирует значение в шаблоне (| date, | async)",
+        "Меняет стратегию Change Detection",
+        "Отправляет HTTP-запрос"
+      ],
+      "correct": 1,
+      "explanation": "Pipe — класс с декоратором @Pipe, реализует метод transform для преобразования значений в шаблоне.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "question": "Какой оператор RxJS используется для подписки?",
+      "options": [
+        "subscribe()",
+        "map()",
+        "pipe()",
+        "switchMap()"
+      ],
+      "correct": 0,
+      "explanation": "Подписка на Observable инициируется методом subscribe(), принимающим next/error/complete callbacks.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "question": "Что такое Zone.js в контексте Angular?",
+      "options": [
+        "Библиотека для типизации",
+        "Механизм перехвата асинхронных операций для автоматического Change Detection",
+        "Генератор компонентов",
+        "Тулкит тестирования"
+      ],
+      "correct": 1,
+      "explanation": "Zone.js патчит асинхронные API (setTimeout, Promises) и уведомляет Angular о завершении, инициируя проверку изменений.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 12,
+      "question": "Назначение ChangeDetectionStrategy.OnPush?",
+      "options": [
+        "Полностью отключает проверку",
+        "Ограничивает проверку до изменений входных свойств/Observable emissions",
+        "Запускает проверку в отдельном потоке",
+        "Снижает размер бандла"
+      ],
+      "correct": 1,
+      "explanation": "OnPush заставляет Angular проверять компонент при изменении Input ссылок, событиях внутри и async pipe emissions, уменьшая нагрузку.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 13,
+      "question": "Разница между Template-driven и Reactive Forms?",
+      "options": [
+        "Reactive всегда без валидации",
+        "Template-driven управляются декларативно в шаблоне, Reactive — императивно через FormControl API",
+        "Template-driven быстрее в runtime",
+        "Reactive нельзя тестировать"
+      ],
+      "correct": 1,
+      "explanation": "Template-driven: директивы ngModel. Reactive: объектная модель FormGroup/FormControl с явным управлением и удобным тестированием.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 14,
+      "question": "Для чего нужен оператор switchMap в RxJS?",
+      "options": [
+        "Параллельный merge всех потоков",
+        "Отмена предыдущего потока при новом значении и переключение на новый Observable",
+        "Блокировка ошибок",
+        "Повторение значения n раз"
+      ],
+      "correct": 1,
+      "explanation": "switchMap отменяет предыдущую внутреннюю подписку при приходе нового значения и подписывается на новый Observable.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "question": "Что такое Dependency Injection контейнер в Angular?",
+      "options": [
+        "Сервис сборки CSS",
+        "Иерархическая система поставщиков, создающая экземпляры по токенам",
+        "Инструмент логирования",
+        "Средство маршрутизации"
+      ],
+      "correct": 1,
+      "explanation": "DI контейнер хранит провайдеры (token -> factory/value) и разрешает зависимости при создании компонентов/сервисов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 16,
+      "question": "Что делает оператор takeUntil?",
+      "options": [
+        "Повторяет поток бесконечно",
+        "Завершает Observable при эмиссии управляющего Observable",
+        "Буферизует значения",
+        "Соединяет два потока в один массив"
+      ],
+      "correct": 1,
+      "explanation": "takeUntil завершает основной поток при первом next управляющего Observable — удобно для отписки в ngOnDestroy.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 17,
+      "question": "Цель Ahead-of-Time (AoT) компиляции?",
+      "options": [
+        "Добавить исходники TypeScript в браузер",
+        "Предварительно компилировать шаблоны в JS для ускорения и уменьшения размера",
+        "Замедлить сборку ради лучшего дебага",
+        "Удалить RxJS"
+      ],
+      "correct": 1,
+      "explanation": "AoT компилирует шаблоны на этапе сборки, ускоряя старт приложения и позволяя лучшую оптимизацию tree-shaking.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 18,
+      "question": "Что такое Ivy?",
+      "options": [
+        "CSS фреймворк",
+        "Angular рендерер и компилятор нового поколения с улучшенным tree-shaking",
+        "Тестовый раннер",
+        "Система State Management"
+      ],
+      "correct": 1,
+      "explanation": "Ivy — архитектура компиляции/рендеринга (с Angular 9+) дающая меньшие бандлы, более точный tree-shaking и runtime API.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 19,
+      "question": "Content Projection реализуется через?",
+      "options": [
+        "@Injectable",
+        "<ng-content></ng-content> в шаблоне компонента",
+        "@Pipe",
+        "@Directive без селектора"
+      ],
+      "correct": 1,
+      "explanation": "Content projection: <ng-content> позволяет вставлять внешний контент в точку шаблона компонента.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 20,
+      "question": "Назначение ViewChild?",
+      "options": [
+        "Получить инстанс родительского модуля",
+        "Получить ссылку на элемент DOM/директиву/дочерний компонент из шаблона",
+        "Создать lazy-loaded модуль",
+        "Запланировать change detection вручную"
+      ],
+      "correct": 1,
+      "explanation": "@ViewChild позволяет получить доступ к элементу/директиве/компоненту после инициализации представления.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 21,
+      "question": "Чем отличается ngOnChanges от ngOnInit?",
+      "options": [
+        "ngOnInit вызывается чаще",
+        "ngOnChanges вызывается при каждом изменении @Input до ngOnInit",
+        "ngOnChanges доступен только в сервисах",
+        "ngOnInit обрабатывает изменения Input автоматически"
+      ],
+      "correct": 1,
+      "explanation": "ngOnChanges вызывается при каждом изменении входных свойств (до первого ngOnInit). ngOnInit — один раз после первичной установки Input.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 22,
+      "question": "Для чего нужен RouterModule?",
+      "options": [
+        "Сборка бандла",
+        "Определение маршрутов, навигация, Guards, lazy loading",
+        "Оптимизация производительности CSS",
+        "Парсинг JSON"
+      ],
+      "correct": 1,
+      "explanation": "RouterModule предоставляет директивы routerLink, роуты, Guards, lazy loading конфигурацию и сервис Router.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 23,
+      "question": "Назначение Resolve Guard?",
+      "options": [
+        "Блокирует все переходы",
+        "Предзагружает данные до активации маршрута",
+        "Обновляет заголовок страницы",
+        "Отменяет изменения формы"
+      ],
+      "correct": 1,
+      "explanation": "Resolve Guard возвращает Observable/Promise, данные которого доступны в ActivatedRoute.data после завершения перед навигацией.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 24,
+      "question": "Lazy loading модулей уменьшает?",
+      "options": [
+        "Качество кода",
+        "Начальный размер бандла и время загрузки",
+        "Возможность DI",
+        "Скорость сборки AoT"
+      ],
+      "correct": 1,
+      "explanation": "Lazy loading загружает код маршрутов по требованию, снижая initial bundle и ускоряя first paint.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 25,
+      "question": "Что делает async pipe?",
+      "options": [
+        "Создает Observable",
+        "Подписывается на Observable/Promise и автоматически отписывается при уничтожении",
+        "Удаляет зону",
+        "Оптимизирует сборку CSS"
+      ],
+      "correct": 1,
+      "explanation": "async pipe подписывается на поток, отображает последнее значение и автоматически отписывается — снижает утечки памяти.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 26,
+      "question": "Зачем нужен TrackBy в *ngFor?",
+      "options": [
+        "Отправка события в сервер",
+        "Сокращает перерисовку списка, определяя идентификатор элемента",
+        "Асинхронная загрузка модуля",
+        "Фильтрация дублей"
+      ],
+      "correct": 1,
+      "explanation": "trackBy возвращает уникальный ключ, позволяя Angular переиспользовать DOM и не пересоздавать элементы при обновлении.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 27,
+      "question": "Pure vs Impure Pipe различие?",
+      "options": [
+        "Impure вызывается реже",
+        "Impure вызывается на каждый цикл, pure только при изменении ссылок/примитивов",
+        "Pure видит внутреннее состояние компонентов",
+        "Pure запрещен в AoT"
+      ],
+      "correct": 1,
+      "explanation": "Pure pipe триггерится при изменении входных ссылок. Impure — при каждом CD цикле, может быть дорого.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 28,
+      "question": "Injector hierarchy влияет на?",
+      "options": [
+        "Стратегию роутинга",
+        "Область жизни сервисов (root, компонентный уровень, lazy модуль)",
+        "Размер CSS",
+        "Работу pipe"
+      ],
+      "correct": 1,
+      "explanation": "Иерархия инжекторов определяет уникальность инстанса: root singleton, компонентный scope, lazy module отдельный экземпляр.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 29,
+      "question": "Renderer2 используется для?",
+      "options": [
+        "Сборки TypeScript",
+        "Абстракции манипуляций с DOM независимой от платформы",
+        "Оптимизации HTTP",
+        "Создания модулей"
+      ],
+      "correct": 1,
+      "explanation": "Renderer2 обеспечивает безопасные операции с DOM и возможность работы в разных платформах (Server, NativeScript).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 30,
+      "question": "Differential Loading решает?",
+      "options": [
+        "Сжатие изображений",
+        "Генерацию разных бандлов для современных и старых браузеров",
+        "Оптимизацию CSS-переменных",
+        "Тестирование производительности"
+      ],
+      "correct": 1,
+      "explanation": "Differential Loading создает ES2015+ и ES5 бандлы, ускоряя загрузку в современных браузерах и сохраняя совместимость.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 31,
+      "question": "Когда использовать ngOnDestroy?",
+      "options": [
+        "Для создания компонента",
+        "Для очистки ресурсов: отписки, таймеры, слушатели",
+        "Для SSR рендеринга",
+        "Для кеширования данных"
+      ],
+      "correct": 1,
+      "explanation": "ngOnDestroy вызывается перед удалением компонента/директивы и позволяет освободить ресурсы и избежать утечек.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 32,
+      "question": "Как предотвратить XSS в шаблонах?",
+      "options": [
+        "Отключить sanitizer",
+        "Использовать встроенную санитизацию Angular и избегать [innerHTML] без DomSanitizer",
+        "Использовать eval",
+        "Преобразовать всё в JSON"
+      ],
+      "correct": 1,
+      "explanation": "Angular автоматически санитизирует опасные привязки. Для доверенного контента применяют DomSanitizer.bypassSecurityTrust... осознанно.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 33,
+      "question": "Router Guard CanActivate отвечает за?",
+      "options": [
+        "Формирование HTTP заголовков",
+        "Разрешение или запрет навигации к маршруту",
+        "Сжатие ответа",
+        "Кеширование Observable"
+      ],
+      "correct": 1,
+      "explanation": "CanActivate возвращает true/false/Observable/Promise для определения допуска пользователя к маршруту.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 34,
+      "question": "В чем преимущество Standalone Components?",
+      "options": [
+        "Удаляют TypeScript",
+        "Упрощают архитектуру без обязательных NgModule, повышая tree-shaking",
+        "Отключают DI",
+        "Заменяют RxJS"
+      ],
+      "correct": 1,
+      "explanation": "Standalone компоненты объявляют imports внутри @Component, сокращая необходимость в декларации NgModule и улучшая оптимизацию.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 35,
+      "question": "inject() функция в Angular служит для?",
+      "options": [
+        "Создания компонента",
+        "Получения зависимости вне конструктора (напр. в фабриках, функциях)",
+        "Генерации шаблона",
+        "Компиляции SCSS"
+      ],
+      "correct": 1,
+      "explanation": "inject(Token) доступна в runtime контексте DI (в провайдерах, фабриках), позволяя получить зависимость без конструктора.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 36,
+      "question": "Что делает HttpInterceptor?",
+      "options": [
+        "Кэширует компоненты",
+        "Перехватывает HTTP запросы/ответы для модификации (auth, логирование)",
+        "Отменяет DI",
+        "Убирает zone.js"
+      ],
+      "correct": 1,
+      "explanation": "Interceptor реализует метод intercept(req,next), позволяя цепочно модифицировать запросы/ответы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 37,
+      "question": "Преимущество Signals (Angular >=16)?",
+      "options": [
+        "Уменьшают размер HTML",
+        "Предоставляют детерминированную модель реактивности без зон и сложных Observable для локального состояния",
+        "Заменяют CSS",
+        "Удаляют необходимость DI"
+      ],
+      "correct": 1,
+      "explanation": "Signals — pull-based реактивность: компонент знает зависимости, что упрощает оптимизации и работу без zone.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 38,
+      "question": "Hydration в Angular SSR решает?",
+      "options": [
+        "Удаление всех серверных данных",
+        "Связывание существующего серверного HTML с клиентским приложением без полной перерисовки",
+        "Заморозку роутера",
+        "Замену RxJS"
+      ],
+      "correct": 1,
+      "explanation": "Hydration позволяет использовать уже отрендеренный сервером HTML и привязывать обработчики событий, снижая работу клиента.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 39,
+      "question": "NgZone.runOutsideAngular используется для?",
+      "options": [
+        "Запуска Change Detection чаще",
+        "Выполнения кода без триггера CD (например, прослушка scroll, heavy задачи)",
+        "Удаления компонента",
+        "Компиляции шаблона"
+      ],
+      "correct": 1,
+      "explanation": "runOutsideAngular позволяет выполнить операцию без триггера CD, затем при необходимости вернуться в зону через run().",
+      "difficulty": "medium"
+    },
+    {
+      "id": 40,
+      "question": "Назначение FormBuilder?",
+      "options": [
+        "Сборка CSS grid",
+        "Упрощенное создание FormGroup/FormControl через фабричные методы",
+        "Оптимизация HTTP",
+        "Обработка роутинга"
+      ],
+      "correct": 1,
+      "explanation": "FormBuilder предоставляет group/control/array методы для декларативного построения реактивных форм.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 41,
+      "question": "ReplaySubject отличается тем что?",
+      "options": [
+        "Не хранит значения",
+        "Хранит заданное число последних эмиссий и реплеит новым подписчикам",
+        "Работает только с Errors",
+        "Всегда буферизует бесконечно"
+      ],
+      "correct": 1,
+      "explanation": "ReplaySubject(n) кэширует последние n значений и при подписке выдает их сразу новому наблюдателю.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 42,
+      "question": "NgFor директива относится к типу?",
+      "options": [
+        "Атрибутной",
+        "Структурной",
+        "Pipe",
+        "Сервисной"
+      ],
+      "correct": 1,
+      "explanation": "*ngFor структурная директива: она изменяет структуру DOM добавлением/удалением узлов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 43,
+      "question": "forwardRef используется для?",
+      "options": [
+        "Оптимизации pipe",
+        "Ссылки на класс, объявляемый позже (циклические зависимости)",
+        "Удаления модуля",
+        "Асинхронного импорта шаблона"
+      ],
+      "correct": 1,
+      "explanation": "forwardRef(() => Type) позволяет указать токен до фактического определения класса (решая круговые зависимости).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 44,
+      "question": "NgTemplateOutlet служит для?",
+      "options": [
+        "Генерации CSS",
+        "Вставки указанного <ng-template> в текущий просмотр",
+        "Логирования ошибок",
+        "Удаления DI"
+      ],
+      "correct": 1,
+      "explanation": "NgTemplateOutlet позволяет программно рендерить шаблоны, передавая контекст и изменяя композицию UI.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 45,
+      "question": "Стратегия оптимизации при большом списке компонентов?",
+      "options": [
+        "Использовать Impure pipes везде",
+        "OnPush + trackBy + виртуализация списка",
+        "Отключить AoT",
+        "Глубокое клонирование данных"
+      ],
+      "correct": 1,
+      "explanation": "Комбинация OnPush, правильного trackBy и виртуализации (cdk-virtual-scroll) снижает перерисовки и нагруженность CD.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 46,
+      "question": "Dynamic component creation делается через?",
+      "options": [
+        "HttpClient",
+        "ViewContainerRef.createComponent(...)",
+        "Renderer2.createRoot(...)",
+        "NgModuleFactoryResolver для Signal"
+      ],
+      "correct": 1,
+      "explanation": "ViewContainerRef.createComponent позволяет динамически создать компонент и вставить его в контейнер.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 47,
+      "question": "Разница между mergeMap и concatMap?",
+      "options": [
+        "concatMap параллелит все",
+        "mergeMap параллелит, concatMap последовательно обрабатывает внутренние Observables",
+        "mergeMap всегда отменяет предыдущие",
+        "concatMap вызывает ошибку на втором значении"
+      ],
+      "correct": 1,
+      "explanation": "mergeMap подписывается параллельно, concatMap ставит в очередь, выполняя по порядку (сохранение порядка).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 48,
+      "question": "NgRx используется для?",
+      "options": [
+        "SSR сборки",
+        "Управления глобальным состоянием через Redux-подобный паттерн",
+        "Оптимизации CSS",
+        "Отрисовки Canvas"
+      ],
+      "correct": 1,
+      "explanation": "NgRx реализует стор, actions, reducers, effects для предсказуемого управления состоянием и сайд-эффектами.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 49,
+      "question": "Effect в NgRx предназначен для?",
+      "options": [
+        "Чтения state без действий",
+        "Обработки асинхронных сайд-эффектов и диспатча новых действий",
+        "Переопределения DI",
+        "Очистки store"
+      ],
+      "correct": 1,
+      "explanation": "Effects слушают поток действий, выполняют async операции (HTTP) и диспатчат новые actions без мутаций.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 50,
+      "question": "Что такое Selector в NgRx?",
+      "options": [
+        "HTTP middleware",
+        "Мемоизированная функция выборки части состояния",
+        "Pipe трансформатор",
+        "Интерцептор роутинга"
+      ],
+      "correct": 1,
+      "explanation": "Selector комбинирует части state и мемоизирует результат, предотвращая лишние вычисления при неизменном входе.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 51,
+      "question": "SSR (Angular Universal) дает?",
+      "options": [
+        "Увеличение JS размера",
+        "Предрендер страниц на сервере для SEO/перформанса",
+        "Удаление DI",
+        "Замену RxJS на Fetch"
+      ],
+      "correct": 1,
+      "explanation": "SSR рендерит HTML на сервере, улучшая Time-to-First-Byte, SEO и восприятие скорости.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 52,
+      "question": "NG1000 ошибки относятся к?",
+      "options": [
+        "Системе логирования",
+        "Angular компилятору (Ivy) сообщения диагностики",
+        "CSS парсеру",
+        "Node.js версии"
+      ],
+      "correct": 1,
+      "explanation": "Коды NGxxxx — диагностические ошибки Angular Compiler/Ivy, помогают локализовать проблему в шаблонах/метаданных.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 53,
+      "question": "Standalone bootstrap делается через?",
+      "options": [
+        "platformBrowser().bootstrapModule(...)",
+        "bootstrapApplication(RootComponent, options)",
+        "Renderer2.init(...)",
+        "runSignalApp(...)"
+      ],
+      "correct": 1,
+      "explanation": "bootstrapApplication позволяет запускать приложение без корневого NgModule, указывая провайдеры напрямую.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 54,
+      "question": "Router navigate vs navigateByUrl различие?",
+      "options": [
+        "navigateByUrl не принимает массив сегментов",
+        "navigate принимает массив сегментов и разрезолвит относительные маршруты",
+        "navigateByUrl всегда сбрасывает state",
+        "navigate нельзя использовать в Guards"
+      ],
+      "correct": 1,
+      "explanation": "navigate(['path']) учитывает относительный контекст, navigateByUrl('/abs') работает со строкой абсолютного URL.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 55,
+      "question": "Почему важно отписываться от вручную созданных подписок?",
+      "options": [
+        "Для ускорения сборки",
+        "Чтобы избежать утечек памяти и лишних CD триггеров",
+        "Чтобы включить AoT",
+        "Для SSR работы"
+      ],
+      "correct": 1,
+      "explanation": "Ненужные подписки держат ссылки на компоненты, не позволяя GC и вызывая лишние обновления.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 56,
+      "question": "NgRx Entity облегчает?",
+      "options": [
+        "Генерацию модулей",
+        "CRUD операции и нормализацию коллекций в store",
+        "SSR",
+        "Сборку стилей"
+      ],
+      "correct": 1,
+      "explanation": "EntityAdapter обеспечивает методы add/update/remove и селекторы для управляемых коллекций сущностей.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 57,
+      "question": "Directive host binding задается через?",
+      "options": [
+        "@PipeBinding",
+        "@HostBinding() и @HostListener()",
+        "@InjectHost",
+        "@ViewHost"
+      ],
+      "correct": 1,
+      "explanation": "@HostBinding связывает свойство директивы с атрибутом/классом/стилем хоста, @HostListener слушает события хоста.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 58,
+      "question": "Optimistic UI обновление в Angular обычно реализуют через?",
+      "options": [
+        "Отложенную навигацию",
+        "Немедленное обновление локального состояния до подтверждения сервера с последующим rollback при ошибке",
+        "SSR перерендер",
+        "Удаление компонента"
+      ],
+      "correct": 1,
+      "explanation": "Optimistic UI повышает воспринимаемую скорость: локально меняем state, если сервер ошибку — откат.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 59,
+      "question": "Angular DevTools помогает?",
+      "options": [
+        "Писать SQL запросы",
+        "Профилировать CD циклы, анализировать структуру и производительность",
+        "Сжать изображения",
+        "Деплоить на сервер"
+      ],
+      "correct": 1,
+      "explanation": "DevTools показывает дерево компонентов, триггеры CD и позволяет диагностировать bottlenecks.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 60,
+      "question": "Что делает ng add?",
+      "options": [
+        "Удаляет пакеты",
+        "Добавляет библиотеку и выполняет её schematic для настройки проекта",
+        "Пересобирает node_modules",
+        "Запускает тесты"
+      ],
+      "correct": 1,
+      "explanation": "ng add <package> устанавливает пакет и запускает его schematics (настройка конфигов, модулей).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 61,
+      "question": "Что такое builder в Angular CLI?",
+      "options": [
+        "Переводчик i18n",
+        "Расширяемая задача (build, test, e2e) реализуемая через target и пакет",
+        "Module federation",
+        "Runtime DI контейнер"
+      ],
+      "correct": 1,
+      "explanation": "CLI builders определяют поведение команд (ng build/test) и могут быть кастомизированы сторонними пакетами.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 62,
+      "question": "Как работает Tree-Shaking в Angular с Ivy?",
+      "options": [
+        "Удаляет все сервисы",
+        "Устраняет неиспользуемый код благодаря точечным импортам и статическому анализу метаданных",
+        "Заменяет runtime",
+        "Сокращает HTML"
+      ],
+      "correct": 1,
+      "explanation": "Ivy генерирует компактные фабрики, позволяя bundler'ам удалить неиспользуемые компоненты/директивы/пайпы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 63,
+      "question": "Назначение ControlValueAccessor?",
+      "options": [
+        "Оптимизация CD",
+        "Интеграция кастомного компонента со Form API",
+        "SSR hydrate",
+        "Сжатие JS"
+      ],
+      "correct": 1,
+      "explanation": "ControlValueAccessor адаптер соединяет компонент с ngModel/Reactive Forms (writeValue, registerOnChange...).",
+      "difficulty": "hard"
+    },
+    {
+      "id": 64,
+      "question": "Как минимизировать память при большом стриме Observable?",
+      "options": [
+        "Использовать Subject без завершения",
+        "Отписываться (takeUntil), применять операторы (debounceTime), избегать вложенной подписки",
+        "Делать ручной GC",
+        "Хранить все значения в массиве"
+      ],
+      "correct": 1,
+      "explanation": "Контроль подписок, ограничение потока, отсутствие nested subscribe и использование pipe операторов снижает утечки.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 65,
+      "question": "difference между Subject и BehaviorSubject?",
+      "options": [
+        "BehaviorSubject не хранит значение",
+        "BehaviorSubject хранит последнее и выдает его новым подписчикам",
+        "Subject всегда реплеит два значения",
+        "Subject требует начальное значение"
+      ],
+      "correct": 1,
+      "explanation": "BehaviorSubject(initial) хранит последнее значение; Subject не выдает прошлых значений новым подписчикам.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 66,
+      "question": "Как реализовать кастомный Async Validator?",
+      "options": [
+        "Через pipe",
+        "Функция возвращает Promise/Observable ValidationErrors|null",
+        "Использовать Renderer2",
+        "Через @Directive без селектора"
+      ],
+      "correct": 1,
+      "explanation": "Async валидатор — функция (control) => Observable<ValidationErrors|null> подключается в asyncValidators массива.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 67,
+      "question": "NgZone отключение (zone-less) требует?",
+      "options": [
+        "Использовать signal store",
+        "bootstrapApplication с { ngZone: 'noop' } и ручные Trigger CD (ChangeDetectorRef) или сигналами",
+        "Удалить RxJS",
+        "Применить Impure pipe"
+      ],
+      "correct": 1,
+      "explanation": "При 'noop' зоне Angular не инициирует CD автоматически, нужен ручной вызов markForCheck/detectChanges или Signals.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 68,
+      "question": "Как протестировать компонент с зависимостью от HttpClient?",
+      "options": [
+        "Использовать реальный сервер",
+        "Подключить HttpClientTestingModule и использовать HttpTestingController для моков",
+        "Заменить на fetch",
+        "Отключить DI"
+      ],
+      "correct": 1,
+      "explanation": "HttpClientTestingModule предоставляет HttpTestingController.expectOne для контроля запросов и ответов в юнит тестах.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 69,
+      "question": "Глубокая оптимизация CD при сложных графах состояния?",
+      "options": [
+        "Использовать impure pipes",
+        "OnPush + immutability + мемоизация селекторов + разделение больших компонентов",
+        "Отключить AoT",
+        "Создать один глобальный компонент"
+      ],
+      "correct": 1,
+      "explanation": "Иммутабельные структуры + OnPush + разбиение дерева и мемоизированные селекторы уменьшают затраты CD.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 70,
+      "question": "Преимущество RendererFactory2?",
+      "options": [
+        "Создает тесты автоматически",
+        "Настройка кастомного рендерера (например логирование операций DOM)",
+        "Оптимизация HTTP",
+        "Увеличение размера бандла"
+      ],
+      "correct": 1,
+      "explanation": "RendererFactory2 позволяет внедрить собственную логику при создании Renderer2 для расширенных платформенных сценариев.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 71,
+      "question": "Как использовать Web Worker в Angular?",
+      "options": [
+        "Через импорта RxJS",
+        "ng generate web-worker <component> затем вынести тяжелую логику в worker",
+        "Создать pipe",
+        "Добавить Guard"
+      ],
+      "correct": 1,
+      "explanation": "CLI генерирует scaffold worker. Сообщения передаются через postMessage. Уменьшает main thread блокировки.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 72,
+      "question": "Custom PreloadingStrategy нужна для?",
+      "options": [
+        "Компиляции TS",
+        "Тонкой настройки загрузки lazy модулей (условно, при сети/приоритетах)",
+        "Замены DI",
+        "Кеширования сигналов"
+      ],
+      "correct": 1,
+      "explanation": "Реализуя PreloadingStrategy можно решать когда подгружать lazy-модуль (на основе метаданных маршрута).",
+      "difficulty": "hard"
+    },
+    {
+      "id": 73,
+      "question": "Как минимизировать bundle size?",
+      "options": [
+        "Отключить production режим",
+        "Использовать Standalone, lazy loading, удалять polyfills, оптимизировать imports, включить build optimizer",
+        "Включить impure pipes",
+        "Добавить большие библиотеки"
+      ],
+      "correct": 1,
+      "explanation": "Продакшен сборка + build optimizer + правильное разделение кода и отсутствие лишних зависимостей снижают размер.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 74,
+      "question": "Difference между Defer блоком (@defer) и обычным шаблоном?",
+      "options": [
+        "@defer ускоряет always",
+        "@defer откладывает рендер части UI до наступления триггеров (видимость, idle)",
+        "@defer обязательный для всех компонентов",
+        "Обычный шаблон не может рендериться"
+      ],
+      "correct": 1,
+      "explanation": "@defer (Angular 17+) позволяет частично загружать UI позже, снижая initial work и improving performance.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 75,
+      "question": "Когда использовать markForCheck()?",
+      "options": [
+        "При OnPush когда внешняя реактивность изменила данные вне Angular зоны",
+        "Всегда при любом событии",
+        "Для удаления компонента",
+        "При инициализации root модуля"
+      ],
+      "correct": 0,
+      "explanation": "markForCheck помечает OnPush компонент для последующей проверки при следующем проходе CD.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 76,
+      "question": "detectChanges() отличие от markForCheck()?",
+      "options": [
+        "detectChanges запускает проверку немедленно локально, markForCheck откладывает до общего цикла",
+        "Оба делают одно и то же",
+        "markForCheck делает немедленный рекурсивный проход",
+        "detectChanges запрещен в продакшене"
+      ],
+      "correct": 0,
+      "explanation": "detectChanges немедленно запускает CD для текущего дерева, markForCheck лишь помечает для будущего цикла.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 77,
+      "question": "Как реализовать многократную Content Projection?",
+      "options": [
+        "Несколько @Pipe",
+        "Использовать <ng-content select=\"...\"> для разных слотов",
+        "Создать несколько модулей",
+        "Сделать dynamic import"
+      ],
+      "correct": 1,
+      "explanation": "Несколько <ng-content select=\".header\"> и т.п. позволяют проецировать разные части контента отдельно.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 78,
+      "question": "NgRx Store freeze (dev) предотвращает?",
+      "options": [
+        "Async запросы",
+        "Мутацию state объектов напрямую",
+        "Переход по маршруту",
+        "Сигналы"
+      ],
+      "correct": 1,
+      "explanation": "Store freeze выбрасывает ошибку при попытке изменить state напрямую, enforcing immutability.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 79,
+      "question": "Почему не стоит делать nested subscribe?",
+      "options": [
+        "Это быстрее",
+        "Усложняет управление отписками, теряется композиция операторов",
+        "Запрещено компилятором",
+        "Ломает DI"
+      ],
+      "correct": 1,
+      "explanation": "Композиция через pipe операторов (switchMap/mergeMap) заменяет вложенные subscribe, улучшая контроль потоков.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 80,
+      "question": "Webpack Module Federation интеграция нужна для?",
+      "options": [
+        "Сборки SCSS",
+        "Динамической загрузки удаленных модулей/приложений (micro-frontend)",
+        "Оптимизации CSS переменных",
+        "Удаления Observables"
+      ],
+      "correct": 1,
+      "explanation": "Module Federation позволяет шарить/загружать части приложений как удаленные модули, реализуя micro-frontend архитектуру.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 81,
+      "question": "Сложный компонент сильно нагружает Change Detection. Первое действие?",
+      "options": [
+        "Переход на Impure pipes",
+        "Анализ шаблона/передача тяжелой логики вне шаблона и применение OnPush",
+        "Отключить SSR",
+        "Добавить больше watchers"
+      ],
+      "correct": 1,
+      "explanation": "Перенос расчетов из шаблона, мемоизация и OnPush уменьшают нагрузку.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 82,
+      "question": "Как избежать дублирующих HTTP запросов при нескольк подписчиках?",
+      "options": [
+        "Использовать concatMap",
+        "shareReplay(1) на Observable запроса",
+        "Использовать nested subscribe",
+        "Всегда делать новый HttpClient"
+      ],
+      "correct": 1,
+      "explanation": "shareReplay кэширует результат и повторно выдает подписчикам без нового HTTP.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 83,
+      "question": "Custom Structural Directive базовый API?",
+      "options": [
+        "@Pipe + transform",
+        "@Directive + TemplateRef + ViewContainerRef для управления вложениями",
+        "@Component + styleUrls",
+        "@Injectable + providedIn"
+      ],
+      "correct": 1,
+      "explanation": "Структурная директива получает TemplateRef и управляет вставкой/удалением через ViewContainerRef.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 84,
+      "question": "Сложная логика маршрутизации + сохранение состояния формы при уходе?",
+      "options": [
+        "Использовать pipe async",
+        "CanDeactivate Guard для подтверждения и возможного сохранения",
+        "Удалить форму",
+        "Отключить роутер"
+      ],
+      "correct": 1,
+      "explanation": "CanDeactivate позволяет проверить состояние (грязная форма) и решить о навигации/сохранении данных.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 85,
+      "question": "Оптимизация i18n runtime?",
+      "options": [
+        "Вставить строки вручную",
+        "Компиляция переводов на build этапе (i18n extraction + локализация) уменьшает runtime работу",
+        "Выполнять все через JSON.parse",
+        "Дублировать ключи"
+      ],
+      "correct": 1,
+      "explanation": "Статическая локализация собирает сообщений и генерирует локализованные бандлы, исключая runtime lookup.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 86,
+      "question": "Как профилировать медленный компонент?",
+      "options": [
+        "Добавить console.log везде",
+        "Использовать Angular DevTools + Performance профайлер браузера",
+        "Отключить HTTP",
+        "Удалить RxJS"
+      ],
+      "correct": 1,
+      "explanation": "DevTools показывает CD триггеры, браузер Performance — время рендеринга и layout.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 87,
+      "question": "В чем риск передачи больших объектов через Input без иммутабельности?",
+      "options": [
+        "Никакого риска",
+        "OnPush не обнаружит глубокие изменения, что приведет к несвоевременной перерисовке",
+        "Router сломается",
+        "HTTP отключится"
+      ],
+      "correct": 1,
+      "explanation": "OnPush реагирует на смену ссылок; мутирование внутри не меняет ссылку — UI не обновится.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 88,
+      "question": "Complex State: почему использовать Facade слой?",
+      "options": [
+        "Увеличить связность",
+        "Скрыть детали store, упростить тестирование и уменьшить знания компонента о реализации",
+        "Удалить селекторы",
+        "Обойти DI"
+      ],
+      "correct": 1,
+      "explanation": "Facade изолирует компоненты от множества selectors/actions, упрощает миграции и тестирование.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 89,
+      "question": "Оператор exhaustMap применяется когда?",
+      "options": [
+        "Нужно параллелить все запросы",
+        "Игнорировать новые эмиссии пока текущий внутренний Observable не завершится",
+        "Отменять текущий",
+        "Всегда повторять ошибки"
+      ],
+      "correct": 1,
+      "explanation": "exhaustMap полезен для предотвращения спама (кнопка submit) игнорируя новые клики до завершения текущей операции.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 90,
+      "question": "setState в Signal Store предпочтительнее прямой мутации потому что?",
+      "options": [
+        "Ускоряет CSS",
+        "Сохраняет неизменяемость и гарантирует корректные уведомления зависимостей",
+        "Удаляет RxJS",
+        "Делает SSR невозможным"
+      ],
+      "correct": 1,
+      "explanation": "Иммутабельное обновление состояния гарантирует детерминированные сигналы и корректный tracking зависимостей.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 91,
+      "question": "Оптимизация высокой частоты событий (scroll/resize)?",
+      "options": [
+        "Ставить console.log",
+        "Использовать throttleTime/debounceTime и runOutsideAngular",
+        "Отключить роутер",
+        "Всегда делать mergeMap"
+      ],
+      "correct": 1,
+      "explanation": "Снижение частоты обработчиков и выполнение вне зоны уменьшает CD нагрузку.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 92,
+      "question": "Почему важна сериализация state при SSR?",
+      "options": [
+        "Для включения XSS",
+        "Чтобы передать предварительно загруженные данные клиенту и избежать повторного запроса",
+        "Ускорить компилятор",
+        "Удалить CSS"
+      ],
+      "correct": 1,
+      "explanation": "Сериализация state в window позволяет клиенту гидратировать приложение без повторных загрузок.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 93,
+      "question": "NgOptimizedImage дает?",
+      "options": [
+        "Удаляет HTML",
+        "Автоматические подсказки загрузки, оптимизацию и lazy для изображений",
+        "Замену роутера",
+        "Миграцию RxJS"
+      ],
+      "correct": 1,
+      "explanation": "NgOptimizedImage упрощает внедрение оптимизированных изображений (preload, lazy, правильные sizes/srcset).",
+      "difficulty": "hard"
+    },
+    {
+      "id": 94,
+      "question": "Как минимизировать влияние больших третьих библиотек?",
+      "options": [
+        "Импортировать всё",
+        "Использовать динамический import() и lazy маршруты",
+        "Сделать полифил",
+        "Добавить в global scope"
+      ],
+      "correct": 1,
+      "explanation": "Code-splitting через dynamic import и lazy loading загружает библиотеку только при необходимости.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 95,
+      "question": "Abstract class vs interface в Angular DI?",
+      "options": [
+        "Интерфейс может быть токеном",
+        "Abstract class может выступать в роли токена и иметь реализацию",
+        "Оба не могут быть токеном",
+        "Только интерфейс хранит метаданные"
+      ],
+      "correct": 1,
+      "explanation": "Интерфейсы стираются в JS и не могут быть токенами; абстрактные классы сохраняются и могут использоваться в DI.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 96,
+      "question": "Применение scoped provider в компоненте?",
+      "options": [
+        "provider в компоненте создает shared singleton",
+        "provider в компоненте создает новый инстанс для каждого экземпляра компонента",
+        "provider ломает DI",
+        "provider отключает Change Detection"
+      ],
+      "correct": 1,
+      "explanation": "Определение providers в компоненте создает дочерний injector и изолирует экземпляры зависимостей.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 97,
+      "question": "Как отложить тяжёлый вычислительный pipe?",
+      "options": [
+        "Добавить в шаблон прямой вызов",
+        "Перейти на мемоизацию и вызывать вне шаблона, передавая результат",
+        "Использовать impure pipe",
+        "Расширить DI"
+      ],
+      "correct": 1,
+      "explanation": "Тяжёлые вычисления лучше вынести из шаблона, мемоизировать по входным параметрам и передавать готовое значение.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 98,
+      "question": "Security: bypassSecurityTrustHtml опасен потому что?",
+      "options": [
+        "Делает HTML безопасным автоматически",
+        "Отменяет санитизацию и может допустить XSS если контент не проверен",
+        "Удаляет DOM",
+        "Останавливает CD"
+      ],
+      "correct": 1,
+      "explanation": "bypassSecurityTrustHtml нужно применять только к гарантированно безопасному контенту иначе возможны XSS уязвимости.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 99,
+      "question": "State normalization зачем?",
+      "options": [
+        "Увеличить сложность",
+        "Предотвратить дубли, ускорить выборку и обновление сущностей",
+        "Удалить селекторы",
+        "Заменить DI"
+      ],
+      "correct": 1,
+      "explanation": "Нормализация (map id->entity) упрощает обновления и выборку, снижает дублирование и сложность вложенных структур.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 100,
+      "question": "Почему важно явно типизировать Observable потоки?",
+      "options": [
+        "Для отключения оптимизаций",
+        "Предотвращает ошибки на этапе компиляции, улучшает читаемость и рефакторинг",
+        "Увеличивает размер бандла",
+        "Замедляет runtime"
+      ],
+      "correct": 1,
+      "explanation": "Строгая типизация потоков (Observable<User>) гарантирует корректность операторов и облегчает поддержку кода.",
+      "difficulty": "hard"
+    }
+  ]
+}
