@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2025-11-15",
+  "lastUpdated": "2025-11-18",
   "category": "postgres",
   "questions": [
     {
@@ -802,6 +802,1611 @@
       "correct": 1,
       "explanation": "effective_io_concurrency отражает возможности дисковой подсистемы (например количество outstanding requests) улучшая оценку bitmap scans.",
       "difficulty": "hard"
+    },
+    {
+      "id": 101,
+      "question": "Чем отличается схема от базы данных в PostgreSQL?",
+      "options": ["Схема = физический файл, база = логический контейнер", "Схема группирует объекты внутри одной базы, база = отдельный кластер", "Схема = логическая группа объектов внутри базы, база = отдельный логический каталог в рамках кластера", "Схема и база данных — полные синонимы"],
+      "correct": 2,
+      "explanation": "В кластере PostgreSQL несколько баз данных, каждая база содержит схемы. Схема — логический namespace для таблиц, функций и т.п. внутри одной базы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 102,
+      "question": "Какой командой создать новую схему?",
+      "options": ["ADD SCHEMA name", "CREATE SCHEMA name", "NEW SCHEMA name", "ALTER DATABASE ADD SCHEMA"],
+      "correct": 1,
+      "explanation": "Синтаксис CREATE SCHEMA [IF NOT EXISTS] name создаёт новую схему в текущей базе данных.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 103,
+      "question": "Как изменить search_path для текущей сессии?",
+      "options": ["ALTER ROLE", "ALTER SYSTEM", "SET search_path TO ...", "ALTER DATABASE"],
+      "correct": 2,
+      "explanation": "Для текущей сессии search_path настраивается командой SET search_path TO schema1, schema2 ...; глобально можно задать через ALTER ROLE/ALTER DATABASE.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 104,
+      "question": "Какой тип данных лучше использовать для точного хранения денежных значений?",
+      "options": ["REAL", "DOUBLE PRECISION", "NUMERIC(p, s)", "TEXT"],
+      "correct": 2,
+      "explanation": "Денежные суммы требуют точной арифметики без ошибок округления с плавающей точкой, поэтому используют NUMERIC/DECIMAL с нужной точностью.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 105,
+      "question": "Какой тип данных подходит для хранения IP-адресов?",
+      "options": ["IP", "CIDR/INET", "VARIP", "MAC"],
+      "correct": 1,
+      "explanation": "PostgreSQL имеет специализированные типы INET и CIDR для IP-адресов и подсетей с поддержкой операторов и индексации.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 106,
+      "question": "Как получить список таблиц только пользовательских схем (без системных)?",
+      "options": [
+        "SELECT * FROM pg_class",
+        "SELECT * FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')",
+        "SELECT * FROM information_schema.tables WHERE table_type = 'BASE TABLE'",
+        "SELECT * FROM pg_namespace"
+      ],
+      "correct": 1,
+      "explanation": "Представление pg_tables содержит таблицы, фильтрация по schemaname позволяет исключить системные схемы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 107,
+      "question": "Какой тип индекса чаще всего используют для геоданных с PostGIS?",
+      "options": ["BTREE", "HASH", "GiST", "BRIN"],
+      "correct": 2,
+      "explanation": "PostGIS использует GiST-индексы (или SP-GiST) для хранения геометрий и эффективного поиска по пространственным операторам.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 108,
+      "question": "Какой командой посмотреть активные подключения и их БД?",
+      "options": ["SELECT * FROM pg_locks", "SELECT * FROM pg_stat_activity", "SELECT * FROM pg_database", "SHOW max_connections"],
+      "correct": 1,
+      "explanation": "pg_stat_activity показывает активные сеансы, их базу данных, пользователя, состояние и запрос.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 109,
+      "question": "Какой оператор объединяет JSONB объекты?",
+      "options": ["+", "||", "@>", "#>"],
+      "correct": 1,
+      "explanation": "Оператор || конкатенирует JSON/JSONB объекты и массивы, объединяя их содержимое.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 110,
+      "question": "Как правильно ограничить число результатов и пропустить первые N строк?",
+      "options": ["LIMIT x OFFSET y", "TOP x, SKIP y", "ROWNUM BETWEEN", "FETCH FIRST x, SKIP y"],
+      "correct": 0,
+      "explanation": "PostgreSQL использует синтаксис LIMIT <count> OFFSET <count> (а также стандартный FETCH FIRST ... ROWS ONLY).",
+      "difficulty": "easy"
+    },
+    {
+      "id": 111,
+      "question": "Как получить размер конкретной таблицы с индексами?",
+      "options": ["pg_table_size(regclass)", "pg_total_relation_size(regclass)", "pg_database_size(name)", "pg_relation_size(regclass)"],
+      "correct": 1,
+      "explanation": "pg_total_relation_size учитывает саму таблицу, TOAST и связанные индексы, удобен для оценки полного объёма.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 112,
+      "question": "Какой тип индекса лучше использовать для диапазонных запросов по дате?",
+      "options": ["BTREE", "HASH", "GIN", "BRIN"],
+      "correct": 0,
+      "explanation": "Классический BTREE хорошо оптимизирует BETWEEN и неравенства по упорядочиваемым типам, включая дату и время.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 113,
+      "question": "Как получить список всех индексов для таблицы?",
+      "options": ["pg_indexes", "pg_locks", "pg_stat_all_tables", "pg_stat_indexes"],
+      "correct": 0,
+      "explanation": "Представление pg_indexes содержит информацию об индексаx, включая имя таблицы и DDL выражение.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 114,
+      "question": "Какой тип данных лучше использовать для UUID?",
+      "options": ["CHAR(36)", "TEXT", "UUID", "BYTEA"],
+      "correct": 2,
+      "explanation": "Тип UUID хранит значение компактно и поддерживается функциями/операторами ядра и расширения uuid-ossp.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 115,
+      "question": "Как создать индекс уникальности по нескольким столбцам?",
+      "options": ["ALTER TABLE ADD UNIQUE(col1, col2)", "CREATE UNIQUE INDEX ON tbl(col1, col2)", "Оба варианта допустимы", "Невозможно"],
+      "correct": 2,
+      "explanation": "Уникальность можно задать ограничением UNIQUE (DDL уровня таблицы) или явным UNIQUE INDEX — оба варианта допустимы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 116,
+      "question": "Какой оператор используется для case-insensitive поиска по тексту с учётом локали?",
+      "options": ["LIKE", "ILIKE", "SIMILAR TO", "~"],
+      "correct": 1,
+      "explanation": "ILIKE — регистронезависимый вариант LIKE с учетом колляции.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 117,
+      "question": "Зачем использовать enum типы вместо TEXT для статических списков значений?",
+      "options": ["Меньше потребление диска и чёткие ограничения", "Быстрее VACUUM", "Ускоряет WAL", "Обязательная репликация"],
+      "correct": 0,
+      "explanation": "ENUM ограничивает значения списком, обеспечивает валидацию на уровне схемы и может быть компактнее на диске, чем TEXT.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 118,
+      "question": "Какая проблема может возникнуть при использовании SELECT * в приложении?",
+      "options": ["Ошибки кодировки", "Ломается MVCC", "Зависимость от порядка/набора столбцов и лишний трафик", "Невозможность использовать индексы"],
+      "correct": 2,
+      "explanation": "SELECT * создаёт хрупкую зависимость от схемы и тянет лишние данные; лучше явно указывать нужные столбцы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 119,
+      "question": "Как в одном запросе вернуть агрегат и подробные строки без подзапросов?",
+      "options": ["GROUP BY", "WINDOW FUNCTIONS (OVER)", "CTE", "Невозможно"],
+      "correct": 1,
+      "explanation": "Окно функций (window functions) позволяет вычислять агрегаты поверх набора строк, не схлопывая их, благодаря предложению OVER().",
+      "difficulty": "medium"
+    },
+    {
+      "id": 120,
+      "question": "Чем CTE с WITH RECURSIVE отличается от обычного WITH?",
+      "options": ["Использует MVCC", "Позволяет рекурсивно ссылаться на себя и обходить иерархии", "Всегда быстрее", "Запрещён в транзакции"],
+      "correct": 1,
+      "explanation": "WITH RECURSIVE позволяет CTE выражению ссылаться на себя и строить рекурсивные запросы (например обход дерева).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 121,
+      "question": "Что такое prepared transaction (двухфазный коммит) в PostgreSQL?",
+      "options": ["Сохранённый план", "Транзакция, переведённая в состояние PREPARE TRANSACTION для 2PC", "Автоматический коммит", "Только read-only"],
+      "correct": 1,
+      "explanation": "PREPARE TRANSACTION переводит транзакцию в подготовленное состояние для двухфазного коммита между системами; позже COMMIT PREPARED/ROLLBACK PREPARED.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 122,
+      "question": "Какой риск при злоупотреблении CTE до PostgreSQL 12?",
+      "options": ["Отключение WAL", "CTE всегда материализуются, что может замедлять выполнение", "Невозможность индексации", "Потеря ACID"],
+      "correct": 1,
+      "explanation": "До 12-й версии CTE материализовались как барьер оптимизации; это могло приводить к лишним сканированиям и потерям производительности.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 123,
+      "question": "Как ограничить пользователю доступ только к чтению данных?",
+      "options": ["Роль с REPLICATION", "GRANT SELECT на необходимые схемы/таблицы", "Использовать SUPERUSER", "Невозможно"],
+      "correct": 1,
+      "explanation": "Создают роль без привилегий по умолчанию и выдают только SELECT на конкретные объекты (и USAGE на схемы).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 124,
+      "question": "Какой командой отключить возможность логина для роли?",
+      "options": ["REVOKE LOGIN", "ALTER ROLE name NOLOGIN", "DROP ROLE", "ALTER SYSTEM SET login=off"],
+      "correct": 1,
+      "explanation": "ALTER ROLE ... NOLOGIN запрещает использовать роль напрямую для подключения, но роль может применяться как группа.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 125,
+      "question": "Как задать дефолтное значение столбца текущим временем?",
+      "options": ["DEFAULT NOW()", "DEFAULT GETDATE()", "DEFAULT CURRENT_TIME", "DEFAULT SYSDATE"],
+      "correct": 0,
+      "explanation": "Чаще всего используют DEFAULT now() или стандартный CURRENT_TIMESTAMP для временной метки вставки.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 126,
+      "question": "Какой тип индекса лучше для поля email с уникальностью и частыми вставками?",
+      "options": ["UNIQUE BTREE", "HASH", "GIN", "BRIN"],
+      "correct": 0,
+      "explanation": "UNIQUE BTREE обеспечивает как поиск по равенству, так и проверку уникальности с оптимальной производительностью.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 127,
+      "question": "Что делает ON CONFLICT ... DO UPDATE?",
+      "options": ["Удаляет дубликаты", "Реализует upsert: при конфликте по уникальному/PK обновляет строку", "Отключает уникальный индекс", "Только логирует конфликт"],
+      "correct": 1,
+      "explanation": "Синтаксис INSERT ... ON CONFLICT ... DO UPDATE реализует upsert-поведение — вставка или обновление при нарушении уникальности.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 128,
+      "question": "Как лучше реализовать soft delete в PostgreSQL?",
+      "options": ["DELETE всегда", "TRUNCATE", "Флаг is_deleted + частичные индексы и фильтры", "DROP TABLE"],
+      "correct": 2,
+      "explanation": "Для мягкого удаления обычно добавляют флаг/статус, используют partial индексы и отображают только активные строки в запросах.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 129,
+      "question": "Какой тип триггера использовать для генерации значения до вставки?",
+      "options": ["AFTER INSERT", "INSTEAD OF", "BEFORE INSERT", "AFTER UPDATE"],
+      "correct": 2,
+      "explanation": "BEFORE INSERT позволяет изменить NEW.колонки до фактической вставки в таблицу.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 130,
+      "question": "Чем INSTEAD OF триггер отличается от BEFORE/AFTER?",
+      "options": ["Работает только с функциями", "Применяется к представлениям и полностью заменяет стандартное действие", "Только для системных таблиц", "Используется в WAL"],
+      "correct": 1,
+      "explanation": "INSTEAD OF триггеры определены для представлений и заменяют собой стандартную операцию INSERT/UPDATE/DELETE над view.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 131,
+      "question": "Как безопасно выполнить массовое удаление без блокировки всей таблицы надолго?",
+      "options": ["Один большой DELETE", "TRUNCATE всегда", "Удалять батчами с лимитом и условием по первичному ключу", "VACUUM FULL"],
+      "correct": 2,
+      "explanation": "Часто используют batched DELETE (например по PK диапазонами) чтобы уменьшить время удержания блокировок и нагрузку на WAL.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 132,
+      "question": "Зачем использовать COPY вместо множества INSERT?",
+      "options": ["COPY медленнее", "COPY не пишет WAL", "COPY значительно эффективнее для массовой загрузки данных", "COPY работает только с файлами"],
+      "correct": 2,
+      "explanation": "COPY (из файла или STDIN) оптимизирован для bulk-load и минимизирует протокол и накладные расходы по сравнению с тысячами INSERT.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 133,
+      "question": "Какой функцией проверить, что индекс не используется?",
+      "options": ["pg_stat_all_tables", "pg_stat_user_indexes", "pg_index_unused()", "pg_locks"],
+      "correct": 1,
+      "explanation": "pg_stat_user_indexes содержит счетчики idx_scan — по ним можно судить, используются ли индексы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 134,
+      "question": "Зачем иногда отключают constraint-triggers перед массовой загрузкой?",
+      "options": ["Чтобы сломать целостность", "Чтобы ускорить загрузку и затем валидировать данные", "Чтобы уменьшить размер таблицы", "Чтобы отключить WAL"],
+      "correct": 1,
+      "explanation": "При больших миграциях иногда временно отключают или откладывают проверки внешних ключей, затем выполняют VALIDATE CONSTRAINT.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 135,
+      "question": "Как включить расширение pg_stat_statements?",
+      "options": ["CREATE EXTENSION pg_stat_statements", "ALTER SYSTEM ENABLE pg_stat_statements", "LOAD 'pg_stat_statements'", "SELECT enable_pg_stat_statements()"],
+      "correct": 0,
+      "explanation": "После добавления в shared_preload_libraries нужно выполнить CREATE EXTENSION pg_stat_statements в нужной базе.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 136,
+      "question": "Какие параметры важно настроить для подключения Java-приложения через connection pool?",
+      "options": ["max_connections, shared_buffers", "work_mem, maintenance_work_mem", "statement_timeout, idle_in_transaction_session_timeout", "pool_size на приложении и разумный max_connections на сервере"],
+      "correct": 3,
+      "explanation": "Обычно ограничивают max_connections и используют пул на стороне приложения, чтобы не создавать тысячи соединений к PostgreSQL.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 137,
+      "question": "Почему не рекомендуется давать приложениям право SUPERUSER?",
+      "options": ["Суперпользователь медленнее", "Нельзя использовать индексы", "Это нарушает модель безопасности, позволяет обходить все проверки и повредить кластер", "Требует больше памяти"],
+      "correct": 2,
+      "explanation": "SUPERUSER игнорирует большинство ограничений безопасности; приложения должны работать от минимально необходимых ролей.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 138,
+      "question": "Как настроить default значения параметров только для одной БД?",
+      "options": ["ALTER SYSTEM", "ALTER DATABASE name SET ...", "ALTER ROLE", "SET LOCAL ..."],
+      "correct": 1,
+      "explanation": "ALTER DATABASE позволяет установить параметры по умолчанию для всех сессий, подключающихся к конкретной базе.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 139,
+      "question": "Что даёт использование partial индекса по условию status = 'ACTIVE'?",
+      "options": ["Запрещает UPDATE", "Уменьшает размер индекса и ускоряет запросы по активным строкам", "Отключает VACUUM", "Создаёт CLUSTER"],
+      "correct": 1,
+      "explanation": "Индекс хранит только строки с заданным предикатом, занимая меньше места и ускоряя типовые запросы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 140,
+      "question": "Чем опасны функции с VOLATILE в индексах?",
+      "options": ["Не работают", "Могут давать разные значения для одной и той же строки, ломая консистентность индекса", "Замедляют VACUUM", "Отключают WAL"],
+      "correct": 1,
+      "explanation": "Индексируемое выражение должно быть стабильным; VOLATILE-функции могут возвращать разные значения и приводить к неверным результатам.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 141,
+      "question": "Какой тип блокировки конфликтует с большинством DDL операций?",
+      "options": ["ACCESS SHARE", "ACCESS EXCLUSIVE", "ROW SHARE", "SHARE"],
+      "correct": 1,
+      "explanation": "ACCESS EXCLUSIVE — самый строгий режим; большинство DDL требуют именно его и конфликтуют почти со всеми остальными.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 142,
+      "question": "Как работает CLUSTER в PostgreSQL?",
+      "options": ["Просто создаёт индекс", "Физически переупорядочивает таблицу по выбранному индексу", "Удаляет дубликаты", "Только обновляет статистику"],
+      "correct": 1,
+      "explanation": "CLUSTER переписывает таблицу в порядке индекса, улучшая локальность доступа для соответствующих запросов, но требует блокировок.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 143,
+      "question": "Как уменьшить время восстановления после сбоя при большом объёме WAL?",
+      "options": ["Увеличить max_wal_size", "Снизить частоту checkpoint_timeout и max_wal_size", "Отключить WAL", "Отключить full_page_writes"],
+      "correct": 1,
+      "explanation": "Более частые контрольные точки ограничивают объём WAL, который нужно проиграть при восстановлении, сокращая время recovery.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 144,
+      "question": "Какой стратегией шардирования часто пользуются поверх PostgreSQL?",
+      "options": ["Шардирование по колонке hash(user_id)", "Шардирование только по размеру файла", "Только по времени CPU", "Шардирование по имени схемы"],
+      "correct": 0,
+      "explanation": "На уровне приложения часто применяют консистентное хеш-шардирование по ключу пользователя/тенанта.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 145,
+      "question": "Какую проблему решает pgBouncer перед PostgreSQL?",
+      "options": ["Репликацию", "Пуллинг и переиспользование соединений", "Шифрование данных", "Резервное копирование"],
+      "correct": 1,
+      "explanation": "pgBouncer уменьшает количество реальных подключений к PostgreSQL, переиспользуя их для множества клиентских сессий.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 146,
+      "question": "Как выполнить атомарное изменение баланса с проверкой версии строки?",
+      "options": ["UPDATE без WHERE", "UPDATE ... WHERE id = ... AND version = ...", "SELECT и потом UPDATE", "INSERT ON CONFLICT"],
+      "correct": 1,
+      "explanation": "Optimistic locking обычно реализуют через версионное поле: UPDATE ... WHERE id = ? AND version = ?, проверяя количество затронутых строк.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 147,
+      "question": "Что такое advisory locks?",
+      "options": ["Системные блокировки страниц", "Пользовательские логические блокировки, не связанные напрямую с конкретными объектами", "Только для WAL", "Блокировки только для VACUUM"],
+      "correct": 1,
+      "explanation": "Advisory locks позволяют приложениям координировать доступ, используя произвольные ключи, не привязанные к таблицам/строкам.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 148,
+      "question": "Какой командой посмотреть активные advisory locks?",
+      "options": ["SELECT * FROM pg_locks WHERE locktype = 'advisory'", "SELECT * FROM pg_advisory", "SHOW advisory_locks", "SELECT * FROM pg_stat_activity"],
+      "correct": 0,
+      "explanation": "pg_locks показывает в том числе advisory блокировки, фильтрация по locktype = 'advisory'.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 149,
+      "question": "Как реализовать аудит изменений строк (кто и когда изменил)?",
+      "options": ["VACUUM", "Использовать триггеры BEFORE/AFTER и отдельную audit-таблицу", "Только через WAL", "Невозможно"],
+      "correct": 1,
+      "explanation": "Распространённый подход — триггер, который пишет в журнал изменений необходимые поля, пользователя и время.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 150,
+      "question": "Как в запросе посчитать кумулятивную сумму по дате?",
+      "options": ["GROUP BY", "SUM(value) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)", "SUM() без OVER", "Невозможно"],
+      "correct": 1,
+      "explanation": "Окно SUM() OVER(ORDER BY ...) позволяет вычислять скользящие и кумулятивные агрегаты.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 151,
+      "question": "Какой механизм используется для логической репликации на уровне строк?",
+      "options": ["File shipping", "Logical decoding + публикации/подписки", "Streaming physical", "pg_basebackup"],
+      "correct": 1,
+      "explanation": "Logical replication строится поверх logical decoding, публикаций и подписок, передавая изменения строк.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 152,
+      "question": "Зачем может понадобиться row level security (RLS)?",
+      "options": ["Для ускорения запросов", "Для ограничения доступа к строкам в зависимости от пользователя/контекста", "Для шифрования данных", "Для VACUUM"],
+      "correct": 1,
+      "explanation": "RLS политики позволяют задавать условия видимости строк, реализуя мультитенантность и строгую безопасность на уровне БД.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 153,
+      "question": "Как включить RLS на таблице?",
+      "options": ["ALTER TABLE ... ENABLE RLS", "CREATE RLS", "ALTER SYSTEM SET rls=on", "VACUUM FULL"],
+      "correct": 0,
+      "explanation": "Команда ALTER TABLE ... ENABLE ROW LEVEL SECURITY включает применение политик RLS для таблицы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 154,
+      "question": "Как избежать N+1 проблемы при выборке связанных сущностей?",
+      "options": ["Делать много SELECT по одной записи", "Использовать JOIN или IN (...), либо батчевые запросы", "Увеличить work_mem", "Включить JIT"],
+      "correct": 1,
+      "explanation": "N+1 запросов заменяют на единичный запрос с JOIN или IN/ANY, либо используют батчи в ORM.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 155,
+      "question": "Чем опасен SELECT без WHERE по большой таблице в проде?",
+      "options": ["Ничем", "Только увеличивает statistics target", "Может занять много ресурсов, блокировать буферы и ухудшить производительность других запросов", "Удаляет таблицу"],
+      "correct": 2,
+      "explanation": "Полный скан большой таблицы может вытеснить полезные данные из кэша и занять I/O, замедляя систему.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 156,
+      "question": "Как определить, какие запросы самые медленные в системе?",
+      "options": ["pg_locks", "pg_stat_statements", "pg_database", "pg_class"],
+      "correct": 1,
+      "explanation": "pg_stat_statements собирает статистику по времени и частоте запросов, позволяя находить тяжелые SQL.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 157,
+      "question": "Какой подход к индексации правильнее?",
+      "options": ["Создавать индекс на каждый столбец", "Создавать индексы исходя из реальных запросов и планов", "Не использовать индексы", "Создавать только составные индексы"],
+      "correct": 1,
+      "explanation": "Индексация должна быть driven-by-queries: смотреть реальные запросы и EXPLAIN ANALYZE, чтобы добавить нужные индексы и не перегрузить DML.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 158,
+      "question": "Как проверить, что актуальная конфигурация postgresql.conf применена?",
+      "options": ["SHOW config_file", "SELECT pg_reload_conf()", "Сравнить SHOW параметров с ожидаемыми", "VACUUM"],
+      "correct": 2,
+      "explanation": "После изменения настроек проверяют SHOW parameter_name или SELECT current_setting(...) и сравнивают с ожидаемыми значениями.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 159,
+      "question": "Какой способ бэкапа даёт логическую, переносимую копию схемы и данных?",
+      "options": ["pg_basebackup", "pg_dump", "файловая копия каталога", "rsync"],
+      "correct": 1,
+      "explanation": "pg_dump создаёт логический дамп, который можно восстановить на другой версии или инстансе PostgreSQL.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 160,
+      "question": "Как снизить блокировки при онлайн-миграции схемы?",
+      "options": ["TRUNCATE", "Использовать ALTER TABLE ... ADD COLUMN с DEFAULT NULL, затем UPDATE батчами", "DROP и CREATE", "VACUUM FULL"],
+      "correct": 1,
+      "explanation": "Некоторые операции (например добавление NOT NULL с DEFAULT) лучше разбивать на шаги, чтобы не держать долгие эксклюзивные блокировки.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 161,
+      "question": "Какой режим изоляции чаще всего используют в веб-приложениях на PostgreSQL?",
+      "options": ["READ UNCOMMITTED", "READ COMMITTED", "REPEATABLE READ", "SERIALIZABLE"],
+      "correct": 1,
+      "explanation": "READ COMMITTED является дефолтным и обычно достаточен для большинства OLTP веб-нагрузок.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 162,
+      "question": "Как понять, что запрос не использует индекс, а делает seq scan?",
+      "options": ["Смотреть pg_locks", "Смотреть EXPLAIN/EXPLAIN ANALYZE", "Смотреть postgresql.conf", "Невозможно"],
+      "correct": 1,
+      "explanation": "План запроса через EXPLAIN показывает, какие узлы используются: Seq Scan, Index Scan, Bitmap Heap Scan и т.д.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 163,
+      "question": "Как задать ограничение на уровне таблицы, зависящее сразу от нескольких столбцов?",
+      "options": ["CHECK (col1 > col2)", "UNIQUE", "PRIMARY KEY", "FOREIGN KEY"],
+      "correct": 0,
+      "explanation": "CHECK-ограничения позволяют задавать произвольные булевы выражения, включающие несколько столбцов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 164,
+      "question": "Какой тип JOIN вернёт только строки, где есть совпадения в обеих таблицах?",
+      "options": ["LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "FULL OUTER JOIN"],
+      "correct": 2,
+      "explanation": "INNER JOIN возвращает пересечение — только строки с совпадающими значениями по условию соединения.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 165,
+      "question": "Какой эффект у VACUUM FULL по сравнению с обычным VACUUM?",
+      "options": ["Только обновляет статистику", "Сжимает таблицу, переписывая её заново и освобождая место в файловой системе", "Не трогает индексы", "Не требует блокировок"],
+      "correct": 1,
+      "explanation": "VACUUM FULL берёт сильную блокировку и переписывает таблицу, уменьшая физический размер, но мешает конкурирующим запросам.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 166,
+      "question": "Когда имеет смысл использовать UNLOGGED таблицы?",
+      "options": ["Для критичных транзакций", "Для временных/кэшевых данных, чья потеря при сбое допустима", "Для системных каталогов", "Никогда"],
+      "correct": 1,
+      "explanation": "UNLOGGED таблицы быстрее за счёт отсутствия WAL, но данные теряются при сбое; подходят для кешей или промежуточных результатов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 167,
+      "question": "Чем EXPLAIN ANALYZE отличается от EXPLAIN?",
+      "options": ["Только формат", "EXPLAIN ANALYZE выполняет запрос и показывает фактические времена и количества строк", "EXPLAIN ANALYZE не показывает план", "EXPLAIN ANALYZE отключает индексы"],
+      "correct": 1,
+      "explanation": "EXPLAIN ANALYZE запускает запрос и сравнивает реальные показатели с оценёнными, что важно для тюнинга.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 168,
+      "question": "Какой риск при использовании SELECT ... FOR UPDATE SKIP LOCKED в очереди задач?",
+      "options": ["Потеря задач", "Возможность starvation менее приоритетных задач", "Отключение WAL", "Невозможность rollback"],
+      "correct": 1,
+      "explanation": "SKIP LOCKED может приводить к тому, что одни задачи обрабатываются постоянно, а некоторые долго остаются невостребованными.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 169,
+      "question": "Как работает NOW() внутри одной транзакции?",
+      "options": ["Возвращает текущее время при каждом вызове", "Фиксируется на момент начала транзакции", "Фиксируется на момент первого SELECT", "Определяется временем коммита"],
+      "correct": 1,
+      "explanation": "Функции семейства now()/CURRENT_TIMESTAMP в рамках одной транзакции возвращают один и тот же timestamp (transaction timestamp).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 170,
+      "question": "Какой тип данных лучше использовать для битовых флагов?",
+      "options": ["BOOLEAN", "BIT(n)/BIT VARYING", "TEXT", "SMALLINT"],
+      "correct": 1,
+      "explanation": "BIT(n) позволяет хранить набор битовых флагов компактно; однако для читаемости иногда предпочитают отдельные BOOLEAN поля.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 171,
+      "question": "Как оптимизировать запрос с OR по двум колонкам?",
+      "options": ["Создать один индекс по (col1, col2)", "Создать два отдельных индекса и позволить планировщику использовать BitmapOr", "Не использовать индексы", "Увеличить shared_buffers"],
+      "correct": 1,
+      "explanation": "Для OR-условий по разным колонкам часто эффективны отдельные индексы с объединением через BitmapOr.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 172,
+      "question": "Чем Window функции отличаются от агрегатных?",
+      "options": ["Window не используют индексы", "Window возвращают значение для каждой строки, не схлопывая набор", "Агрегатные всегда быстрее", "Window доступны только в подзапросах"],
+      "correct": 1,
+      "explanation": "Оконные функции вычисляют агрегаты и другие операции по окну, сохраняя строки результата.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 173,
+      "question": "Как задать ограничение внешнего ключа, удаляющее дочерние строки при удалении родителя?",
+      "options": ["FOREIGN KEY ... ON DELETE CASCADE", "FOREIGN KEY ... ON DELETE RESTRICT", "FOREIGN KEY ... ON DELETE SET NULL", "Невозможно"],
+      "correct": 0,
+      "explanation": "ON DELETE CASCADE автоматически удаляет дочерние записи при удалении родительской.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 174,
+      "question": "Как узнать текущий уровень изоляции сеанса?",
+      "options": ["SELECT current_isolation_level()", "SHOW transaction_isolation", "SELECT * FROM pg_stat_activity", "Нельзя"],
+      "correct": 1,
+      "explanation": "SHOW transaction_isolation или current_setting('transaction_isolation') возвращает активный уровень изоляции.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 175,
+      "question": "Как контролировать время ожидания получения блокировки?",
+      "options": ["deadlock_timeout", "lock_timeout", "statement_timeout", "wal_sender_timeout"],
+      "correct": 1,
+      "explanation": "lock_timeout задаёт максимум ожидания любой блокировки, по истечении запрос отменяется ошибкой lock timeout.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 176,
+      "question": "Какой параметр управления планировщиком влияет на включение параллельных планов вообще?",
+      "options": ["max_parallel_workers_per_gather", "max_worker_processes", "max_parallel_workers", "all above"],
+      "correct": 3,
+      "explanation": "Параллелизм зависит от max_worker_processes, max_parallel_workers и max_parallel_workers_per_gather одновременно.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 177,
+      "question": "Как оценить, не исчерпываются ли идентификаторы транзакций (XID)?",
+      "options": ["Смотреть pg_class", "Смотреть возраст datfrozenxid в pg_database", "Смотреть pg_locks", "Смотреть postgresql.conf"],
+      "correct": 1,
+      "explanation": "pg_database содержит datfrozenxid; его возраст показывает, насколько мы близки к wraparound, и нужно ли агрессивнее VACUUM.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 178,
+      "question": "Как уменьшить размер large object (LOB) хранения?",
+      "options": ["VACUUM", "pg_largeobject не чистится", "Использовать lo_unlink и регулярный vacuumlo", "REINDEX"],
+      "correct": 2,
+      "explanation": "Удалённые LOB-объекты нужно чистить через lo_unlink и утилиту vacuumlo, иначе каталог pg_largeobject разрастается.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 179,
+      "question": "Чем json отличается от jsonb?",
+      "options": ["json быстрее во всех случаях", "jsonb хранится в разобранном бинарном виде и поддерживает индексирование и множество операторов", "jsonb нельзя обновлять", "Это одно и то же"],
+      "correct": 1,
+      "explanation": "jsonb парсится один раз и хранится бинарно; позволяет эффективно индексировать и обновлять части документа.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 180,
+      "question": "Какое расширение используют для полнотекстового поиска по русскому языку?",
+      "options": ["pg_trgm", "unaccent", "pg_tsearch_ru", "ispell/tsvector конфигурации (например russian)"],
+      "correct": 3,
+      "explanation": "Полнотекстовые конфигурации на основе ISpell/Snowball (russian) позволяют корректно стеммить русские слова.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 181,
+      "question": "Как минимизировать конкуренцию за один и тот же счётчик идентификаторов?",
+      "options": ["Использовать BIGSERIAL", "Использовать UUID или hi-lo алгоритмы", "Увеличить work_mem", "Использовать TEMP таблицы"],
+      "correct": 1,
+      "explanation": "Последовательности могут стать точкой конкуренции; альтернативы — UUID, hi-lo схемы, sharded sequences и т.п.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 182,
+      "question": "Какой эффект у параметра enable_seqscan=off?",
+      "options": ["Полностью запрещает seq scan", "Это только подсказка планировщику избегать seq scan, но не строгий запрет", "Отключает индексы", "Отключает VACUUM"],
+      "correct": 1,
+      "explanation": "Параметры enable_* влияют на стоимость узлов, но при необходимости планировщик всё равно может выбрать seq scan.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 183,
+      "question": "Как правильно ограничить видимость данных между разными арендаторами (tenants) в одной БД?",
+      "options": ["Отдельная таблица на каждого", "Колонка tenant_id + RLS политики", "Только на уровне приложения", "UNLOGGED таблицы"],
+      "correct": 1,
+      "explanation": "Типичный multi-tenant дизайн — общие таблицы с tenant_id и RLS, ограничивающими видимость строк по текущему контексту.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 184,
+      "question": "Чем опасно открывать транзакцию в приложении и ждать действий пользователя?",
+      "options": ["Ничем", "Транзакция удерживает ресурсы, блокировки и xmin, создавая риск wraparound и деградацию", "Ускоряет систему", "Отключает WAL"],
+      "correct": 1,
+      "explanation": "Длительные транзакции мешают VACUUM очищать dead tuples и удерживают блокировки, что вредно для производительности и стабильности.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 185,
+      "question": "Какой шаблон часто используют для реализации очереди задач в PostgreSQL?",
+      "options": ["INSERT + SELECT ORDER BY", "SELECT ... FOR UPDATE SKIP LOCKED по статусу задач", "TRUNCATE", "UNLOGGED"],
+      "correct": 1,
+      "explanation": "Очереди строят на таблице задач и выборке батча через SELECT FOR UPDATE SKIP LOCKED с последующим обновлением статуса.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 186,
+      "question": "Как уменьшить размер таблицы с историческими данными?",
+      "options": ["TRUNCATE всегда", "Архивировать старые партиции или переносить старые данные в отдельную таблицу/кластер", "Отключить WAL", "Отключить индексы"],
+      "correct": 1,
+      "explanation": "Часто используют партиционирование по дате и архивирование/удаление целых партиций для управления объёмом.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 187,
+      "question": "Какой формат времени предпочтительнее хранить для таймстемпов в БД?",
+      "options": ["TEXT", "TIMESTAMP WITH TIME ZONE (timestamptz)", "TIMESTAMP WITHOUT TIME ZONE", "INTEGER"],
+      "correct": 1,
+      "explanation": "timestamptz хранит момент времени в UTC и корректно учитывает временные зоны при выводе; это лучший выбор для серверных штампов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 188,
+      "question": "Как использовать индекс для сортировки ORDER BY?",
+      "options": ["Индекс должен соответствовать префиксу ORDER BY и WHERE", "Невозможно", "Всегда создаётся автоматически", "Только с hash индексами"],
+      "correct": 0,
+      "explanation": "Если порядок столбцов в BTREE совпадает с ORDER BY и селекцией, планировщик может использовать индексированный порядок вместо отдельной сортировки.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 189,
+      "question": "Какой параметр влияет на количество точек контроля WAL при резервном копировании через pg_basebackup?",
+      "options": ["checkpoint_timeout", "archive_timeout", "wal_level", "max_wal_senders"],
+      "correct": 1,
+      "explanation": "archive_timeout ограничивает максимальный интервал между архивированием WAL файлов, что важно для надёжности бэкапов.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 190,
+      "question": "Как уменьшить нагрузку от autovacuum на пиковой нагрузке, не выключая его?",
+      "options": ["Отключить VACUUM", "Настроить autovacuum_vacuum_cost_delay и cost_limit, а также расписание через autovacuum_naptime", "Уменьшить max_connections", "Отключить индексы"],
+      "correct": 1,
+      "explanation": "Регулируя cost-based throttling и интервалы, можно распределить работу autovacuum более мягко.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 191,
+      "question": "Какой режим синхронной репликации гарантирует подтверждение записи на реплике перед коммитом?",
+      "options": ["synchronous_commit=off", "synchronous_commit=local", "synchronous_commit=on и настроенный synchronous_standby_names", "wal_level=minimal"],
+      "correct": 2,
+      "explanation": "При synchronous_commit=on и указании синхронных реплик первичный ждёт подтверждения от них перед завершением COMMIT.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 192,
+      "question": "Как проверить задержку реплики относительно основной?",
+      "options": ["pg_stat_replication на primary", "pg_stat_activity", "pg_locks", "pg_database"],
+      "correct": 0,
+      "explanation": "pg_stat_replication содержит поля write_lag/replay_lag, показывающие задержку реплик.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 193,
+      "question": "Чем отличается hot backup с archive_mode=on от обычной файловой копии каталога?",
+      "options": ["Ничем", "Archive_mode=on и archiving WAL позволяет получить согласованный backup без остановки сервера", "Файловая копия всегда лучше", "Только для Windows"],
+      "correct": 1,
+      "explanation": "При архивировании WAL можно восстановить состояние БД на любой момент и обеспечить согласованность снимка.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 194,
+      "question": "Как уменьшить влияние больших запросов отчётности на OLTP нагрузку?",
+      "options": ["Выполнять их на реплике или в отдельном аналитическом кластере", "Отключить индексы", "Увеличить max_connections", "Использовать UNLOGGED"],
+      "correct": 0,
+      "explanation": "Часто выносят аналитику на read-only реплики или отдельный кластер (архитектура primary/warehouse).",
+      "difficulty": "hard"
+    },
+    {
+      "id": 195,
+      "question": "Что такое deadlock и как PostgreSQL с ним справляется?",
+      "options": ["Блокировка WAL", "Ситуация взаимного ожидания блокировок; PostgreSQL детектирует её и отменяет одну транзакцию", "Ошибка сети", "Ошибка парсинга"],
+      "correct": 1,
+      "explanation": "Детектор deadlock периодически проверяет граф ожиданий блокировок и жертвует одной транзакцией для разрыва цикла.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 196,
+      "question": "Как уменьшить риск deadlock в приложении?",
+      "options": ["Использовать SUPERUSER", "Брать блокировки в согласованном порядке, избегать долгих транзакций и явных LOCK TABLE без необходимости", "Отключить WAL", "Увеличить max_connections"],
+      "correct": 1,
+      "explanation": "Единый порядок обновления ресурсов и короткие транзакции значительно снижают вероятность взаимных блокировок.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 197,
+      "question": "Какой тип индекса полезен для поиска по диапазонам IP-сетей?",
+      "options": ["BTREE", "GiST по типам inet/cidr", "HASH", "BRIN"],
+      "correct": 1,
+      "explanation": "GiST поддерживает операторы над inet/cidr и эффективен для поиска принадлежности адреса диапазону.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 198,
+      "question": "Как хранить настройки приложения на уровне БД для конкретного пользователя?",
+      "options": ["postgresql.conf", "pg_hba.conf", "Отдельная таблица user_settings и запросы к ней", "pg_locks"],
+      "correct": 2,
+      "explanation": "Типичный подход — таблица с user_id и ключ/значение, а не хранение настроек в конфигурации сервера.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 199,
+      "question": "Как реализовать event sourcing на базе PostgreSQL?",
+      "options": ["Хранить только текущую аггрегированную запись", "Хранить неизменяемый лог событий в таблице events и строить проекции отдельно", "Использовать TRUNCATE", "Невозможно"],
+      "correct": 1,
+      "explanation": "В event sourcing каждое событие записывается как отдельная запись; состояния восстанавливаются из лога или через проекции.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 200,
+      "question": "Какой тип индекса предпочтительнее для колонки created_at в огромной таблице логов с естественной сортировкой по времени?",
+      "options": ["GIN", "BTREE", "BRIN", "HASH"],
+      "correct": 2,
+      "explanation": "При монотонно растущем created_at и огромной таблице BRIN индекс может быть гораздо компактнее и достаточно эффективен.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 201,
+      "question": "Какой подход к миграциям схемы предпочтителен в микросервисной архитектуре?",
+      "options": ["Ручные DDL в проде", "Скрипты миграций, управляемые из репозитория сервиса (Flyway/Liquibase) и непрерывный деплой", "Только GUI", "Изменения напрямую в pgAdmin"],
+      "correct": 1,
+      "explanation": "Infrastructure as code подразумевает хранение миграций в репозитории и их автоматизированное применение через CI/CD.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 202,
+      "question": "Почему важно, чтобы микросервис владел своей схемой в PostgreSQL?",
+      "options": ["Чтобы было больше индексов", "Чтобы минимизировать coupling и позволить независимую эволюцию модели данных", "Чтобы включить SUPERUSER", "Чтобы не использовать транзакции"],
+      "correct": 1,
+      "explanation": "Собственная схема/БД на сервис упрощает независимые изменения схемы и снижает риск слома других доменов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 203,
+      "question": "Как реализовать outbox pattern в PostgreSQL?",
+      "options": ["Использовать UNLOGGED", "Хранить события для внешних систем в таблице outbox в той же транзакции, что и доменная запись, затем отдельный воркер читает и публикует", "Использовать TRUNCATE", "Невозможно"],
+      "correct": 1,
+      "explanation": "Outbox pattern обеспечивает атомарность между записью в БД и публикацией события, используя таблицу-выходной буфер.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 204,
+      "question": "Как уменьшить влияние больших batch-миграций на прод?",
+      "options": ["Запускать их днём", "Делить изменения на маленькие шаги, использовать batch-update/delete, лимитировать время транзакций", "Отключить WAL", "НЕ использовать индексы"],
+      "correct": 1,
+      "explanation": "Практика zero-downtime миграций подразумевает мелкие шаги, обратимость и ограничение времени блокировок.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 205,
+      "question": "Какой параметр важно учитывать при работе PostgreSQL в контейнерах/Kubernetes?",
+      "options": ["shared_buffers и использование cgroup memory limits", "Только max_connections", "Только wal_level", "Только fsync"],
+      "correct": 0,
+      "explanation": "В контейнерной среде важно корректно выставлять shared_buffers и другие memory-related параметры с учётом лимитов контейнера.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 206,
+      "question": "Почему не стоит хранить большие BLOBы в обычных таблицах бездумно?",
+      "options": ["Это запрещено", "Могут раздувать TOAST/таблицы, ухудшать бэкапы и I/O; иногда лучше использовать объектное хранилище", "Отключают WAL", "Не работают индексы"],
+      "correct": 1,
+      "explanation": "Большие бинарные данные могут сделать БД тяжелой для бэкапа/репликации; часто выгодно вынести их в внешнее хранилище.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 207,
+      "question": "Как уменьшить время простоя при major-upgrade PostgreSQL?",
+      "options": ["TRUNCATE", "Использовать logical replication или pg_upgrade --link с минимальным downtime", "DROP DATABASE", "Только полный дамп/restore"],
+      "correct": 1,
+      "explanation": "pg_upgrade с --link или logical replication позволяет сократить окно переключения между версиями.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 208,
+      "question": "Какой параметр конфигурации важно настроить для корректного логирования в Kubernetes/докер?",
+      "options": ["log_destination='stderr' и logging_collector=off (с выводом в stdout/stderr контейнера)", "log_destination='csvlog' только", "Всегда включать logging_collector", "Не логировать"],
+      "correct": 0,
+      "explanation": "В контейнерах часто логируют в stdout/stderr, откуда логи собирает оркестратор.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 209,
+      "question": "Почему важно отслеживать bloat таблиц и индексов?",
+      "options": ["Не влияет", "Bloat увеличивает IO и размер бэкапов, замедляет сканы", "Ускоряет запросы", "Отключает WAL"],
+      "correct": 1,
+      "explanation": "Сильный bloat ведет к лишнему чтению страниц и перерасходу места; может потребоваться reindex/CLUSTER/pg_repack.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 210,
+      "question": "Какой инструмент применяют для онлайн-реорганизации таблиц без долгих блокировок?",
+      "options": ["VACUUM FULL", "pg_repack", "TRUNCATE", "DROP/CREATE"],
+      "correct": 1,
+      "explanation": "pg_repack позволяет перестроить таблицу и индексы с минимальными блокировками, в отличие от VACUUM FULL.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 211,
+      "question": "Почему важно разделять нагрузки чтения и записи по соединениям?",
+      "options": ["Чтобы использовать разные роли и параметры (например statement_timeout, search_path) и при необходимости направлять чтение на реплики", "Чтобы отключить WAL", "Чтобы увеличить max_connections", "Чтобы лучше сжимать данные"],
+      "correct": 0,
+      "explanation": "Отдельные пулы для read/write позволяют гибко маршрутизировать запросы и применять разные политики таймаутов и безопасности.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 212,
+      "question": "Как диагностировать, что проблема в диске/I-O, а не в CPU?",
+      "options": ["Смотреть только top", "Смотреть pg_stat_statements", "Смотреть track_io_timing, pg_stat_io/pg_statio_ отношения и системные метрики iostat", "Невозможно"],
+      "correct": 2,
+      "explanation": "Комбинация pg_stat* по I/O и системных утилит показывает, тратится ли время на ожидание диска.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 213,
+      "question": "Какую стратегию выбора ключа партиционирования вы бы предложили для таблицы платежей?",
+      "options": ["По имени клиента в алфавитном порядке", "По дате проведения платежа (RANGE) с разумным размером партиций", "По случайному GUID", "Не партиционировать"],
+      "correct": 1,
+      "explanation": "Время — естественный ключ для партиционирования платежей: упрощает архивацию и запросы по периодам.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 214,
+      "question": "Почему не стоит полагаться на порядок строк без ORDER BY?",
+      "options": ["Порядок всегда по PK", "Порядок определяется физическим расположением и может меняться", "Всегда по времени вставки", "По имени таблицы"],
+      "correct": 1,
+      "explanation": "SQL не гарантирует порядок без ORDER BY; изменения плана или обновления могут изменить порядок строк.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 215,
+      "question": "Какую тактику использовать для online-изменения типа колонки с минимальным простоем?",
+      "options": ["ALTER TABLE ... TYPE сразу", "Создать новую колонку, мигрировать данные батчами, переключить приложение, затем удалить старую", "TRUNCATE", "Невозможно"],
+      "correct": 1,
+      "explanation": "Шаговый подход позволяет избежать длительной блокировки на большой таблице и даёт возможность rollback.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 216,
+      "question": "Как в запросе удобно работать с массивами значений (например, список тегов)?",
+      "options": ["Хранить в TEXT через запятую", "Использовать массивы и оператор ANY/&&/@>", "Только JSON", "Невозможно"],
+      "correct": 1,
+      "explanation": "Типы массивов и операторы над ними (ANY, &&, @>) дают выразительный и индексируемый способ работы со списками.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 217,
+      "question": "Какой способ join-а двух больших таблиц предпочтительнее при равенстве ключей?",
+      "options": ["Nested Loop всегда", "Hash Join или Merge Join в зависимости от сортировки/объёма", "Всегда Merge Join", "Всегда Nested Loop"],
+      "correct": 1,
+      "explanation": "Хэш или merge-планы обычно эффективнее nested loop при больших объёмах и отсутствии подходящих индексов.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 218,
+      "question": "Какой параметр влияет на длину истории WAL при logical decoding?",
+      "options": ["wal_keep_size", "max_slot_wal_keep_size / потребление репликационных слотов", "max_connections", "random_page_cost"],
+      "correct": 1,
+      "explanation": "Репликационные слоты logical decoding удерживают WAL; max_slot_wal_keep_size помогает ограничить их аппетит.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 219,
+      "question": "Почему важно валидировать пользовательский ввод даже при наличии типов/ограничений в PostgreSQL?",
+      "options": ["Не важно", "Чтобы не перегружать БД ошибками и обеспечить дружелюбные сообщения об ошибках на уровне приложения", "Чтобы включить WAL", "Чтобы ускорить VACUUM"],
+      "correct": 1,
+      "explanation": "Ограничения БД — последняя линия защиты; валидация на уровне сервиса улучшает UX и снижает шум ошибок.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 220,
+      "question": "Как реализовать optimistic locking в чистом SQL без ORM?",
+      "options": ["SELECT и потом UPDATE без WHERE", "Добавить версионную колонку и обновлять с условием WHERE id=? AND version=?", "Использовать TRUNCATE", "Невозможно"],
+      "correct": 1,
+      "explanation": "Проверка affected rows после UPDATE по (id, version) позволяет обнаружить конкурирующие изменения.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 221,
+      "question": "Как избежать повторной отправки одного и того же сообщения в distributed outbox?",
+      "options": ["Никак", "Использовать идемпотентные ключи и логировать доставку по message_id", "Всегда TRUNCATE", "Отключить WAL"],
+      "correct": 1,
+      "explanation": "Идемпотентность достигается хранением идентификаторов уже обработанных сообщений и проверкой перед применением.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 222,
+      "question": "Какой параметр важно учитывать для аналитических запросов с большими сортировками/агрегатами?",
+      "options": ["work_mem", "max_connections", "max_wal_size", "wal_level"],
+      "correct": 0,
+      "explanation": "work_mem влияет на объём памяти, выделяемой под сортировки и хеш-агрегации, прежде чем использовать временные файлы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 223,
+      "question": "Как в EXPLAIN ANALYZE понять, что план ошибочно оценил кардинальность?",
+      "options": ["Сравнить planned rows и actual rows для узлов", "Смотреть только время", "Смотреть настройки", "Невозможно"],
+      "correct": 0,
+      "explanation": "Сильное расхождение между оценённым и фактическим количеством строк говорит о проблемах статистики и может объяснять неудачный план.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 224,
+      "question": "Почему важно выбирать подходящие типы для первичных ключей (INTEGER vs BIGINT)?",
+      "options": ["Не важно", "INTEGER быстрее во всех случаях", "Можно столкнуться с переполнением INT при большом количестве строк", "BIGINT всегда быстрее"],
+      "correct": 2,
+      "explanation": "INT32 может переполниться при сотнях миллионов/миллиардах записей; BIGINT даёт больший запас, но требует чуть больше места.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 225,
+      "question": "Как оптимизировать запросы с функциями в WHERE (например, WHERE date(created_at) = ...)?",
+      "options": ["Никак", "Переписать условие в диапазон, чтобы использовать индекс по created_at", "Отключить WAL", "Использовать UNLOGGED"],
+      "correct": 1,
+      "explanation": "Функции над колонкой мешают использованию индекса; лучше сравнивать диапазоны по исходному типу.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 226,
+      "question": "Какой подход к хранению исторических версий сущности (audit trail) вы бы предложили?",
+      "options": ["Перезаписывать строку", "Отдельная history-таблица с version/timestamp и триггерами", "Только логировать в файл", "UNLOGGED"],
+      "correct": 1,
+      "explanation": "History-таблица позволяет хранить несколько версий записи с отметкой времени/версии и не засорять основную таблицу.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 227,
+      "question": "Как контролировать размер логов PostgreSQL?",
+      "options": ["log_rotation_age/log_rotation_size", "max_connections", "work_mem", "wal_level"],
+      "correct": 0,
+      "explanation": "Параметры ротации логов позволяют ограничивать их размер и период хранения.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 228,
+      "question": "Почему важно правильно настраивать локали и collation при создании кластера?",
+      "options": ["Не важно", "Их нельзя потом изменить без пересоздания кластера, они влияют на сортировку и сравнение строк", "Влияет только на WAL", "Только на VACUUM"],
+      "correct": 1,
+      "explanation": "Collation и encoding задают правила сравнения и сортировки; изменение требует пересоздания кластера или использования ICU collations.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 229,
+      "question": "Как проверить, какие расширения установлены в текущей БД?",
+      "options": ["SELECT * FROM pg_extension", "SELECT * FROM pg_class", "SHOW extensions", "pg_stat_extension"],
+      "correct": 0,
+      "explanation": "pg_extension хранит список установленных расширений и их версий.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 230,
+      "question": "Какую стратегию вы бы предложили для шардирования PostgreSQL в высоконагруженной системе?",
+      "options": ["Единая монолитная БД", "Горизонтальное шардирование по ключу тенанта/пользователя, с выделением отдельных кластеров для самых крупных", "Шардирование по имени таблицы", "Никакую"],
+      "correct": 1,
+      "explanation": "Типовой подход — разбивка нагрузки по ключу (tenant_id/user_id) и выделение отдельных кластеров для крупных клиентов.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 231,
+      "question": "Как эффективно хранить справочники (reference data) в PostgreSQL?",
+      "options": ["В JSONB", "В отдельных маленьких таблицах с первичными ключами и ссылками", "В TEXT", "В UNLOGGED"],
+      "correct": 1,
+      "explanation": "Reference data удобно хранить в нормализованных таблицах и связывать внешними ключами для целостности и удобства обновления.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 232,
+      "question": "Как уменьшить влияние неудачного запроса в проде?",
+      "options": ["Отключить WAL", "Использовать statement_timeout и pgbouncer transaction pooling", "Увеличить max_connections", "Никак"],
+      "correct": 1,
+      "explanation": "Таймауты запросов и пуллинг соединений помогают не допустить зависания тяжёлых запросов и исчерпания ресурсов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 233,
+      "question": "Какой подход к мониторингу PostgreSQL вы считаете минимально необходимым?",
+      "options": ["Только смотреть логи иногда", "Метрики (CPU, I/O, размер), pg_stat_statements, лаг реплик, autovacuum, алерты по таймаутам и ошибкам", "Никакой", "Только pgAdmin"],
+      "correct": 1,
+      "explanation": "Базовый мониторинг должен покрывать производительность, репликацию, вакуум, ошибки и медленные запросы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 234,
+      "question": "Почему важно тестировать миграции PostgreSQL на staging перед продом?",
+      "options": ["Не важно", "Чтобы проверить время выполнения, блокировки и обратимость, а также корректность данных", "Чтобы включить WAL", "Чтобы отключить VACUUM"],
+      "correct": 1,
+      "explanation": "Стейджинг позволяет выявить проблемы миграций до продакшена и оценить их влияние.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 235,
+      "question": "Какую стратегию резервного копирования вы бы предложили для критичной PostgreSQL БД?",
+      "options": ["Только pg_dump раз в неделю", "Регулярные base backup + архивирование WAL (PITR), плюс периодические логические дампы", "Только rsync", "Никакую"],
+      "correct": 1,
+      "explanation": "Сочетание физических бэкапов с WAL и логических дампов даёт и быструю, и гибкую возможность восстановления.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 236,
+      "question": "Почему важно ограничивать доступ к pg_catalog и системным функциям в multi-tenant окружении?",
+      "options": ["Не важно", "Чтобы арендаторы не могли увидеть метаданные и активность других клиентов", "Чтобы ускорить запросы", "Чтобы отключить WAL"],
+      "correct": 1,
+      "explanation": "Некоторые представления могут раскрывать имена таблиц, запросы и статистику других арендаторов; требуется аккуратная настройка прав.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 237,
+      "question": "Какой тип индекса лучше для поля status с несколькими часто используемыми значениями и выборками по ним?",
+      "options": ["BTREE обычный", "Partial BTREE по status='ACTIVE'", "HASH", "BRIN"],
+      "correct": 1,
+      "explanation": "Частичный индекс только по горячему значению статуса уменьшает размер и ускоряет частые запросы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 238,
+      "question": "Как избежать хранения паролей в открытом виде в PostgreSQL?",
+      "options": ["Шифровать всю БД", "Хранить только безопасные хэши (bcrypt/scrypt/argon2) с солью", "Хранить в TEXT", "Использовать UNLOGGED"],
+      "correct": 1,
+      "explanation": "Пароли должны храниться только в виде медленных криптоустойчивых хэшей; доступ к таблице также должен быть ограничен.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 239,
+      "question": "Какой подход к типизации данных в PostgreSQL вы предпочитаете в микросервисах?",
+      "options": ["Всегда TEXT", "Максимально точные типы (timestamp, numeric, jsonb, enum) с явной валидацией", "Только INTEGER", "Только JSON"],
+      "correct": 1,
+      "explanation": "Сильная типизация на уровне БД помогает ловить ошибки и упрощает эволюцию схемы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 240,
+      "question": "Почему важно планировать миграции PostgreSQL с учётом backward compatibility?",
+      "options": ["Не важно", "Чтобы старый и новый код могли работать параллельно в период деплоя", "Чтобы включить WAL", "Чтобы отключить VACUUM"],
+      "correct": 1,
+      "explanation": "Blue-green/rolling деплой требует, чтобы старая версия приложения работала на новой схеме, и наоборот, до завершения миграции.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 241,
+      "question": "Как вы проверите на собеседовании, что кандидат понимает планы запросов PostgreSQL?",
+      "options": ["Попросите объяснить разницу между Seq Scan, Index Scan, Bitmap Heap Scan и показать пример EXPLAIN ANALYZE", "Спросите версию PostgreSQL", "Спросите про VACUUM", "Спросите, что такое MVCC"],
+      "correct": 0,
+      "explanation": "Умение читать планы — ключевой навык для оптимизации запросов; важно, чтобы кандидат мог интерпретировать реальные примеры.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 242,
+      "question": "Как проверить, что конкретный запрос использует нужный индекс?",
+      "options": ["Посмотреть pg_locks", "Выполнить EXPLAIN/EXPLAIN ANALYZE и убедиться, что план содержит Index Scan по нужному индексу", "Посмотреть postgresql.conf", "Только по логам"],
+      "correct": 1,
+      "explanation": "Только план запроса надёжно покажет, какие индексы реально используются.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 243,
+      "question": "Как вы оцените влияние изменения random_page_cost на систему?",
+      "options": ["Изменить и сразу в прод", "Протестировать на стейджинге, сравнить планы и производительность типовых запросов", "Никак", "Включить WAL"],
+      "correct": 1,
+      "explanation": "Чувствительные параметры планировщика нужно менять, сравнивая планы и метрики на репрезентативной нагрузке.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 244,
+      "question": "Какой подход к проектированию схемы вы используете для аналитических витрин?",
+      "options": ["Нормализация до 5НФ", "Схемы звезда/снежинка с fact и dimension таблицами", "Только JSONB", "Только UNLOGGED"],
+      "correct": 1,
+      "explanation": "Для аналитики удобны денормализованные схемы типа star/snowflake для упрощения запросов и оптимизации под чтение.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 245,
+      "question": "Как уменьшить накладные расходы на сетевой round-trip при большом количестве мелких запросов?",
+      "options": ["Увеличить max_connections", "Использовать батчинг, подготовленные выражения, multi-row INSERT и connection pooling", "Отключить WAL", "Использовать UNLOGGED"],
+      "correct": 1,
+      "explanation": "Батчинг и подготовленные запросы уменьшают количество сетевых обменов и парсинга, что особенно важно при высоком RTT.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 246,
+      "question": "Как вы проверите, что autovacuum справляется со своей работой?",
+      "options": ["Посмотреть только логи", "Анализировать pg_stat_all_tables (n_dead_tup, last_vacuum/last_autovacuum) и наличие wraparound-алертов", "Смотреть pg_locks", "Никак"],
+      "correct": 1,
+      "explanation": "Статистика по таблицам и алерты о старых XID покажут, хватает ли работы autovacuum.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 247,
+      "question": "Почему не стоит бездумно увеличивать shared_buffers до половины памяти в Linux?",
+      "options": ["Не влияет", "OS page cache тоже используется для кеширования данных, слишком большие shared_buffers могут привести к двойному кешированию и давлению на память", "Всегда лучше", "Отключает WAL"],
+      "correct": 1,
+      "explanation": "Нужно балансировать память между shared_buffers и файловым кэшем; рекомендации зависят от профиля нагрузки.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 248,
+      "question": "Какой совет вы дадите по использованию ORM с PostgreSQL?",
+      "options": ["Полностью доверять ORM", "Понимать генерируемый SQL, использовать lazy/eager loading осознанно и оптимизировать тяжёлые запросы вручную", "Не использовать ORM", "Всегда использовать SELECT *"],
+      "correct": 1,
+      "explanation": "ORM удобны, но важно контролировать SQL и избегать типичных ловушек вроде N+1.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 249,
+      "question": "Какой подход к versioning схемы БД в git вы используете?",
+      "options": ["Хранить только текущий DDL", "Хранить миграции, снапшоты схемы и скрипты rollback, выверенные через code-review", "Не хранить", "Только pg_dump"],
+      "correct": 1,
+      "explanation": "История миграций и ревью DDL изменений — важная часть инфраструктуры как кода.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 250,
+      "question": "Почему важно внимательно задавать default значения для колонок?",
+      "options": ["Не важно", "Defaults могут влиять на время миграций, поведение приложения и сложность будущих изменений", "Только для JSON", "Только для индексных колонок"],
+      "correct": 1,
+      "explanation": "Неправильный default может скрыть ошибки бизнес-логики или осложнить эволюцию схемы.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 251,
+      "question": "Какой подход к именованию объектов БД улучшает сопровождаемость?",
+      "options": ["Случайные имена", "Согласованные, человекочитаемые имена таблиц, индексов, ограничений и последовательностей", "Очень длинные имена", "Однобуквенные имена"],
+      "correct": 1,
+      "explanation": "Единый стиль именования облегчает поиск и понимание схемы, особенно в большой системе.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 252,
+      "question": "Как организовать миграции в многокомандной среде, чтобы избежать конфликтов?",
+      "options": ["Каждый изменяет БД в проде", "Договариваться о формате миграций, использовать последовательную нумерацию, CI-проверки и ревью", "Не использовать миграции", "Только pgAdmin"],
+      "correct": 1,
+      "explanation": "Процесс и tooling вокруг миграций критичны для согласованной эволюции схемы несколькими командами.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 253,
+      "question": "Почему важно учитывать планируемый объём данных при проектировании схемы?",
+      "options": ["Не важно", "Типы, индексы, партиционирование и стратегия бэкапов сильно зависят от объёма и характера роста", "Влияет только на shared_buffers", "Влияет только на wal_level"],
+      "correct": 1,
+      "explanation": "Решения, оптимальные для 100 тыс. строк, могут стать проблемой на сотнях миллионов без партиционирования и правильных индексов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 254,
+      "question": "Как вы будете расследовать внезапные пики нагрузки на PostgreSQL?",
+      "options": ["Смотреть только top", "Анализировать pg_stat_activity, pg_stat_statements, логи медленных запросов и системные метрики", "Перезапустить сервер", "Ничего"],
+      "correct": 1,
+      "explanation": "Нужен комплексный взгляд на активные запросы, статистику и инфраструктуру, а не только CPU.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 255,
+      "question": "Почему важно ограничивать прямой доступ разработчиков к прод-БД?",
+      "options": ["Не важно", "Чтобы снизить риск случайных DDL/DML, утечек данных и неконтролируемых запросов", "Чтобы ускорить запросы", "Чтобы отключить WAL"],
+      "correct": 1,
+      "explanation": "Продакшн должен обслуживаться через строго контролируемые каналы (read-only, реплики, одобренные скрипты).",
+      "difficulty": "medium"
+    },
+    {
+      "id": 256,
+      "question": "Какой подход к тестированию SQL-запросов применим в .NET/микросервисной архитектуре?",
+      "options": ["Не тестировать", "Писать интеграционные тесты с in-memory/тестовым PostgreSQL, проверяющие фактические результаты и планы при необходимости", "Только unit-тесты без БД", "Только ручное тестирование"],
+      "correct": 1,
+      "explanation": "Интеграционные тесты с реальной БД помогают ловить регрессии в схемах и запросах.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 257,
+      "question": "Как использовать PostgreSQL вместе с CQRS?",
+      "options": ["Хранить всё в одной таблице", "Разделить модели чтения и записи, использовать отдельные схемы/БД/реплики для read-model", "Только JSON", "Никак"],
+      "correct": 1,
+      "explanation": "CQRS допускает разные модели для чтения и записи; PostgreSQL может обслуживать и write, и read-side на разных схемах/репликах.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 258,
+      "question": "Зачем иногда используют временные таблицы в сложных отчётных запросах?",
+      "options": ["Всегда быстрее", "Для разбиения логики на этапы, повторного использования промежуточных результатов и упрощения планов", "Чтобы отключить WAL", "Чтобы отключить индексы"],
+      "correct": 1,
+      "explanation": "Временные таблицы могут улучшить читаемость и управляемость сложных отчётов, хотя и не всегда оптимальны по производительности.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 259,
+      "question": "Какой подход к работе с jsonb в доменной модели предпочтителен?",
+      "options": ["Хранить всю модель в jsonb", "Выделять строго типизированные колонки для важных полей, а jsonb использовать для редко меняющихся/гибких атрибутов", "Всегда TEXT", "Не использовать jsonb"],
+      "correct": 1,
+      "explanation": "Комбинация типизированных полей и jsonb даёт баланс между гибкостью и возможностью индексации/валидации.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 260,
+      "question": "Почему важно понимать физическую модель хранения PostgreSQL (heap, индекс, WAL)?",
+      "options": ["Не важно", "Это напрямую влияет на производительность, стоимость операций и дизайн схемы", "Влияет только на логи", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Глубокое понимание MVCC, индексов и WAL помогает принимать обоснованные архитектурные решения.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 261,
+      "question": "Какой тип данных использовать для хранения флага активности?",
+      "options": ["INTEGER", "BOOLEAN", "TEXT", "JSONB"],
+      "correct": 1,
+      "explanation": "BOOLEAN явно отражает двоичную природу признака и облегчает чтение схемы и запросов.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 262,
+      "question": "Как уменьшить влияние VACUUM на latency коротких запросов?",
+      "options": ["Отключить VACUUM", "Тонко настроить cost-based throttling и график, а также избегать огромных транзакций", "Увеличить max_connections", "Отключить WAL"],
+      "correct": 1,
+      "explanation": "Регулировка autovacuum_cost_limit/delay и поведение приложений помогают сгладить влияние VACUUM.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 263,
+      "question": "Почему важно в EXPLAIN ANALYZE смотреть не только общее время, но и time каждого узла?",
+      "options": ["Не важно", "Это помогает локализовать проблемное место (sort, nested loop, seq scan) и выбрать правильную оптимизацию", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Иногда большая часть времени тратится на конкретный узел, и оптимизация должна быть направлена именно туда.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 264,
+      "question": "Какой подход к мониторингу connection pool вы бы использовали?",
+      "options": ["Не мониторить", "Следить за занятостью пула, временем ожидания соединения и ошибками подключения", "Только считать max_connections", "Только логировать"],
+      "correct": 1,
+      "explanation": "Перегруженный пул приводит к деградации приложения; важно видеть, хватает ли соединений и как долго ждут клиенты.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 265,
+      "question": "Почему важно ограничивать размер транзакции (количество изменённых строк)?",
+      "options": ["Не важно", "Большие транзакции дольше держат блокировки, генерируют много WAL и усложняют recovery", "Ускоряет запросы", "Отключает WAL"],
+      "correct": 1,
+      "explanation": "Малые транзакции легче откатить, они меньше влияют на вакуум и уменьшает окно блокировок.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 266,
+      "question": "Какой подход к транзакциям в микросервисах с PostgreSQL вы предпочитаете?",
+      "options": ["Длинные сессии с открытыми транзакциями", "Короткие, чётко ограниченные транзакции per-request, с явной границей в приложении", "Всегда автокоммит", "Всегда двухфазный коммит"],
+      "correct": 1,
+      "explanation": "Короткие транзакции уменьшают конкуренцию и упрощают масштабирование; долгие транзакции — источник множества проблем.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 267,
+      "question": "Как вы проверите, что конкретная политика RLS работает как задумано?",
+      "options": ["Посмотреть pg_locks", "Выполнить запросы под разными ролями и убедиться в видимости/невидимости строк", "Посмотреть postgresql.conf", "Невозможно"],
+      "correct": 1,
+      "explanation": "Только фактические запросы под нужными ролями подтверждают корректность политик безопасности.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 268,
+      "question": "Почему важно понимать различие между SERIAL, BIGSERIAL и IDENTITY колонками?",
+      "options": ["Не важно", "Это влияет на управляемость последовательностей, переносимость и контроль над генерированием ключей", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "IDENTITY — стандарт SQL и лучше документирует зависимость, тогда как SERIAL — синтаксический сахар вокруг sequence + default.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 269,
+      "question": "Какой подход к логированию медленных запросов вы предпочитаете?",
+      "options": ["Не логировать", "Использовать log_min_duration_statement, pg_stat_statements и анализировать типовые outliers", "Логировать всё", "Только ошибки"],
+      "correct": 1,
+      "explanation": "Целенаправленное логирование медленных запросов даёт баланс между полезностью и объёмом логов.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 270,
+      "question": "Почему важно иметь отдельного ответственного за PostgreSQL (DBA/SRE) в крупной системе?",
+      "options": ["Не важно", "Сложность настройки, мониторинга, бэкапов и оптимизации запросов требует специализации", "Влияет только на отчётность", "Только для Oracle"],
+      "correct": 1,
+      "explanation": "При росте нагрузки и критичности БД нужен человек/команда, глубоко понимающая PostgreSQL и его эксплуатацию.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 271,
+      "question": "Какой тип constraints следует использовать, чтобы запретить отрицательный баланс счёта?",
+      "options": ["FOREIGN KEY", "CHECK (balance >= 0)", "UNIQUE", "PRIMARY KEY"],
+      "correct": 1,
+      "explanation": "CHECK ограничивает допустимые значения баланса на уровне БД, гарантируя инвариант независимо от приложения.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 272,
+      "question": "Как вы будете проектировать схему для хранения событий домена (Domain Events)?",
+      "options": ["В одну таблицу JSONB без индексов", "Таблица events с типом события, агрегатом, временем, полезной нагрузкой и индексами по ключевым полям", "Только в логах сервера", "Никак"],
+      "correct": 1,
+      "explanation": "Чёткая схема событий упрощает анализ, реплей и интеграцию с другими системами.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 273,
+      "question": "Почему важно ограничивать доступ к функциям, которые могут выполнять shell-команды или читать файлы?",
+      "options": ["Не важно", "Иначе SQL-инъекция может привести к компрометации сервера", "Влияет только на производительность", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Функции с доступом к ОС требуют строгих прав; нападение через SQL-инъекцию иначе может выполнить произвольный код.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 274,
+      "question": "Какой подход к версионированию функций/процедур в PostgreSQL вы используете?",
+      "options": ["Изменять на проде", "Хранить исходники в git, использовать миграции и иметь возможность rollback", "Не версионировать", "Только в pgAdmin"],
+      "correct": 1,
+      "explanation": "Функции — часть схемы и должны управляться как код через систему контроля версий и миграции.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 275,
+      "question": "Почему важно понимать ограничения транзакций между микросервисами, использующими разные БД?",
+      "options": ["Не важно", "ACID гарантии внутри PostgreSQL не распространяются на распределённые операции; нужны саги, outbox, идемпотентность", "Влияет только на JSON", "Влияет только на VACUUM"],
+      "correct": 1,
+      "explanation": "В распределённых системах редко используется 2PC; вместо него применяют паттерны, опирающиеся на свойства БД.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 276,
+      "question": "Какой подход к безопасности подключения приложений к PostgreSQL вы считаете базовым минимумом?",
+      "options": ["Все подключаются под одним SUPERUSER", "Использовать отдельные роли per service с минимальными правами, TLS, строгие пароли/секреты", "Пароль в коде", "Нет аутентификации"],
+      "correct": 1,
+      "explanation": "Принцип наименьших привилегий и защита секретов — основа безопасности.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 277,
+      "question": "Почему важно избегать явного LOCK TABLE без крайней необходимости?",
+      "options": ["Не важно", "LOCK TABLE берёт сильные блокировки и может парализовать конкурентные операции", "Всегда ускоряет запросы", "Отключает WAL"],
+      "correct": 1,
+      "explanation": "Часто можно обойтись блокировками строк и аккуратным дизайном транзакций вместо глобальных блокировок таблиц.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 278,
+      "question": "Какой подход к изменению схемы в системе с большим количеством реплик?",
+      "options": ["Менять только на primary", "Планировать миграции с учётом lag реплик, backward-compatible изменения и тестирование на стендах с репликацией", "Не использовать реплики", "Отключать репликацию"],
+      "correct": 1,
+      "explanation": "Реплики могут отставать; ddl/dml должны быть совместимы и корректно применяться на всех узлах.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 279,
+      "question": "Почему важно понимать различие между physical и logical backup в PostgreSQL?",
+      "options": ["Не важно", "Они решают разные задачи: быстрый recovery и переносимость/миграции", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Физические бэкапы хороши для быстрого восстановления, логические — для миграций и точечных восстановлений.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 280,
+      "question": "Какой подход к работе с timezone в приложении и PostgreSQL вы предпочитаете?",
+      "options": ["Хранить локальное время каждого пользователя", "Хранить всё в UTC (timestamptz) и конвертировать на уровне приложения", "Хранить TEXT", "Использовать INTEGER"],
+      "correct": 1,
+      "explanation": "UTC в БД упрощает логику, а отображение в локальное время выполняется в приложении с учётом правил TZ.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 281,
+      "question": "Почему важно не доверять только ORM-миграциям без понимания сгенерированного DDL?",
+      "options": ["Не важно", "Автоматически сгенерированные миграции могут быть неоптимальными или опасными для продакшена", "Влияет только на JSON", "Влияет только на WAL"],
+      "correct": 1,
+      "explanation": "Обязателен код-ревью миграций, особенно на больших таблицах и в критичных системах.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 282,
+      "question": "Какой подход к тестовым данным в PostgreSQL вы предпочитаете?",
+      "options": ["Тестировать на проде", "Использовать фабрики/фикстуры, миграции и изолированные тестовые БД", "Только ручные вставки", "Никаких тестов"],
+      "correct": 1,
+      "explanation": "Автоматизация подготовки тестовых данных делает тесты воспроизводимыми и надёжными.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 283,
+      "question": "Почему важно периодически пересматривать индексы в БД?",
+      "options": ["Не важно", "Ненужные индексы замедляют запись и занимают место, а нужных может не хватать", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Эволюция запросов требует эволюции индексов; старые индексы могут стать балластом.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 284,
+      "question": "Какой подход к security hardening PostgreSQL вы считаете базовым?",
+      "options": ["Оставить дефолтные настройки", "Ограничить listen_addresses, настроить pg_hba.conf по минимуму, использовать TLS, минимум привилегий и актуальные версии", "Всех сделать SUPERUSER", "Отключить аутентификацию"],
+      "correct": 1,
+      "explanation": "Базовый hardening включает сетевые ограничения, сильную аутентификацию и своевременные обновления.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 285,
+      "question": "Почему важно понимать влияние сетевой латентности на PostgreSQL?",
+      "options": ["Не важно", "Много мелких запросов при высоком RTT могут быть гораздо медленнее, чем один батч", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Round-trip time влияет на общее время даже лёгких запросов; батчинг и pooling снижают эффект.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 286,
+      "question": "Какой подход к хранению конфиденциальных данных в PostgreSQL вы используете?",
+      "options": ["В открытом виде", "Шифрование на уровне приложения/колонок, ограничение доступа, аудит", "Только UNLOGGED", "Всегда в JSON"],
+      "correct": 1,
+      "explanation": "Чувствительные данные требуют криптографической защиты и строгого контроля доступа и аудита.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 287,
+      "question": "Почему важно документировать схему БД и ключевые запросы?",
+      "options": ["Не важно", "Документация помогает новым членам команды и уменьшает риск ошибок при изменениях", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Понимание модели данных — основа безопасной эволюции системы.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 288,
+      "question": "Какой подход к деплою изменений в PostgreSQL вы считаете правильным?",
+      "options": ["DDL руками на проде", "Автоматизированные миграции через CI/CD с rollback-планом", "Только pgAdmin", "Никакого"],
+      "correct": 1,
+      "explanation": "Автоматизация и проверенные сценарии миграций снижают человеческий фактор и ускоряют выпуск.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 289,
+      "question": "Почему важно разделять responsibility между приложением и БД?",
+      "options": ["Не важно", "Часть инвариантов проще и надёжнее проверять в БД (constraints), часть — в коде, что требует осознанного дизайна", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Правильное распределение ответственности улучшает надёжность и упрощает сопровождение.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 290,
+      "question": "Какой подход к обучению команды работе с PostgreSQL вы считаете эффективным?",
+      "options": ["Никакого", "Комбинация практических воркшопов, ревью запросов, разборов инцидентов и доступа к тестовым стендам", "Только чтение документации", "Только курсы"],
+      "correct": 1,
+      "explanation": "Практика и разбор реальных кейсов намного эффективнее, чем только теория.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 291,
+      "question": "Почему важно периодически обновлять версию PostgreSQL?",
+      "options": ["Не важно", "Новые версии приносят улучшения производительности, функциональности и безопасности", "Влияет только на JSON", "Влияет только на WAL"],
+      "correct": 1,
+      "explanation": "Своевременные обновления снижают риски уязвимостей и дают доступ к новым возможностям.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 292,
+      "question": "Какой подход к работе с внешними ключами в высоконагруженных системах вы используете?",
+      "options": ["Всегда отключать", "Оставлять там, где они критичны для целостности, и осознанно отключать только в редких случаях", "Всегда включать на все связи", "Не использовать"],
+      "correct": 1,
+      "explanation": "FK гарантируют целостность, но могут влиять на производительность; решение должно быть осознанным.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 293,
+      "question": "Почему важно иметь отдельную read-only роль для аналитиков?",
+      "options": ["Не важно", "Чтобы аналитики не могли случайно изменить данные и имели доступ только к нужным таблицам", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Read-only роли уменьшают риск случайных изменений и утечек.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 294,
+      "question": "Какой подход к управлению схемой в monorepo с несколькими сервисами вы используете?",
+      "options": ["Одна папка со всеми SQL", "Разделить миграции по сервисам/домейнам, но иметь общий обзор схемы и процессы координации", "Не управлять", "Только pgAdmin"],
+      "correct": 1,
+      "explanation": "Важно сохранить модульность и при этом понимать общую картину зависимостей между схемами.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 295,
+      "question": "Почему важно понимать значение параметра search_path?",
+      "options": ["Не важно", "Неверный search_path может привести к использованию неправильных таблиц/функций и уязвимостям", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "search_path влияет на разрешение имён; его нужно настраивать безопасно и явно.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 296,
+      "question": "Какой подход к миграциям в zero-downtime окружении вы используете?",
+      "options": ["Большие миграции с остановкой", "Шаговые миграции: сначала расширение схемы, потом деплой кода, затем очистка legacy", "Только pg_dump", "Никакой"],
+      "correct": 1,
+      "explanation": "Расширяй-существуй-сжимай (expand-contract) — классический подход для безостановочных обновлений схемы.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 297,
+      "question": "Почему важно иметь единый стиль написания SQL в команде?",
+      "options": ["Не важно", "Согласованный стиль повышает читаемость, облегчает ревью и уменьшает ошибки", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Единые правила форматирования и соглашения по именованию делают код базы данных более поддерживаемым.",
+      "difficulty": "easy"
+    },
+    {
+      "id": 298,
+      "question": "Какой подход к использованию функций/процедур в PostgreSQL вы предпочитаете в микросервисной архитектуре?",
+      "options": ["Переносить всю бизнес-логику в БД", "Использовать функции точечно для тяжёлых операций/валидаций, но большую часть логики держать в сервисах", "Не использовать функции", "Только триггеры"],
+      "correct": 1,
+      "explanation": "Функции полезны для инкапсуляции сложных операций, но чрезмерная логика в БД усложняет масштабирование и тестирование.",
+      "difficulty": "hard"
+    },
+    {
+      "id": 299,
+      "question": "Почему важно понимать ограничения и возможности PostgreSQL ещё на этапе проектирования системы?",
+      "options": ["Не важно", "Архитектура, выбор паттернов (CQRS, event sourcing, шардирование) и схемы БД сильно зависят от возможностей БД", "Влияет только на WAL", "Влияет только на JSON"],
+      "correct": 1,
+      "explanation": "Осознанный выбор архитектуры с учётом БД снижает риск серьёзных рефакторингов в будущем.",
+      "difficulty": "medium"
+    },
+    {
+      "id": 300,
+      "question": "Какой общий совет по работе с PostgreSQL вы бы дали разработчику .NET/микросервисов?",
+      "options": ["Не думать о БД", "Понимать основы SQL, MVCC, индексов, уметь читать EXPLAIN и проектировать схемы под домен и нагрузку", "Всегда использовать ORM вслепую", "Всё хранить в JSON"],
+      "correct": 1,
+      "explanation": "Глубокое понимание базовых механизмов PostgreSQL и их связи с архитектурой сервиса критично для производительности и надёжности.",
+      "difficulty": "medium"
     }
   ]
-}
+ }
