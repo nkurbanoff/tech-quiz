@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { HomeScreen } from './components/HomeScreen';
 import { QuizScreen } from './components/QuizScreen';
-import { ResultScreen } from './components/ResultScreen';
 import { QuizDataService } from './services/QuizDataService';
-import type { QuizData } from './types/quiz.types';
+import { ResultModal } from './components/ResultModal';
+import { QuestionCountModal } from './components/QuestionCountModal';
+import type { QuizData, Question } from './types/quiz.types';
 
-type Screen = 'home' | 'quiz' | 'result';
+type Screen = 'home' | 'quiz';
 
 function App() {
   const [screen, setScreen] = useState<Screen>('home');
@@ -17,6 +18,29 @@ function App() {
   const [isCorrect, setIsCorrect] = useState(false);
   const [quizData, setQuizData] = useState<QuizData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionQuestions, setSessionQuestions] = useState<Question[] | null>(null);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [showCountModal, setShowCountModal] = useState(false);
+  const [pendingCategoryId, setPendingCategoryId] = useState<string | null>(null);
+
+  // Fisher–Yates shuffle
+  const shuffleArray = <T,>(arr: T[]): T[] => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  // Перемешивание вариантов ответа с пересчётом индекса correct
+  const shuffleQuestionOptions = (q: Question): Question => {
+    const withIndex = q.options.map((opt, idx) => ({ opt, originalIndex: idx }));
+    const shuffled = shuffleArray(withIndex);
+    const newOptions = shuffled.map(x => x.opt);
+    const newCorrect = shuffled.findIndex(x => x.originalIndex === q.correct);
+    return { ...q, options: newOptions, correct: newCorrect };
+  };
 
   // Дефолтные данные (используются как fallback)
   const defaultData: QuizData = {
@@ -187,18 +211,40 @@ function App() {
   }, []);
 
   const handleStartQuiz = (categoryId: string) => {
+    setPendingCategoryId(categoryId);
+    setShowCountModal(true);
+  };
+
+  const confirmStartQuiz = (count: number) => {
+    if (!quizData || !pendingCategoryId) return;
+    const categoryId = pendingCategoryId;
+    const original = quizData.questions[categoryId] || [];
+    const limitedCount = Math.max(1, Math.min(count, original.length));
+    const shuffledQuestions = shuffleArray(original)
+      .slice(0, limitedCount)
+      .map(q => shuffleQuestionOptions({ ...q }));
+
     setSelectedCategory(categoryId);
+    setSessionQuestions(shuffledQuestions);
     setCurrentQuestionIndex(0);
     setScore(0);
     setScreen('quiz');
     setShowExplanation(false);
     setSelectedAnswer(null);
+    setShowResultModal(false);
+    setShowCountModal(false);
+    setPendingCategoryId(null);
+  };
+
+  const cancelStartQuiz = () => {
+    setShowCountModal(false);
+    setPendingCategoryId(null);
   };
 
   const handleAnswer = (answerIndex: number) => {
-    if (!quizData || !selectedCategory) return;
+    if (!sessionQuestions) return;
 
-    const currentQuestion = quizData.questions[selectedCategory][currentQuestionIndex];
+    const currentQuestion = sessionQuestions[currentQuestionIndex];
     const correct = answerIndex === currentQuestion.correct;
 
     setSelectedAnswer(answerIndex);
@@ -211,16 +257,14 @@ function App() {
   };
 
   const handleNext = () => {
-    if (!quizData || !selectedCategory) return;
+    if (!sessionQuestions) return;
 
-    const questions = quizData.questions[selectedCategory];
-
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < sessionQuestions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setShowExplanation(false);
       setSelectedAnswer(null);
     } else {
-      setScreen('result');
+      setShowResultModal(true);
     }
   };
 
@@ -231,6 +275,8 @@ function App() {
     setScore(0);
     setShowExplanation(false);
     setSelectedAnswer(null);
+    setSessionQuestions(null);
+    setShowResultModal(false);
   };
 
   const handleUpdateData = async () => {
@@ -257,56 +303,61 @@ function App() {
       Object.entries(quizData.questions).map(([key, questions]) => [key, questions.length])
     );
 
+    const maxCount = pendingCategoryId ? quizData.questions[pendingCategoryId].length : 0;
+
     return (
-      <HomeScreen
-        categories={quizData.categories}
-        questionsCount={questionsCount}
-        onStartQuiz={handleStartQuiz}
-        onUpdateData={handleUpdateData}
-      />
+      <>
+        <HomeScreen
+          categories={quizData.categories}
+          questionsCount={questionsCount}
+          onStartQuiz={handleStartQuiz}
+          onUpdateData={handleUpdateData}
+        />
+        {showCountModal && pendingCategoryId && (
+          <QuestionCountModal
+            maxCount={maxCount}
+            onCancel={cancelStartQuiz}
+            onConfirm={confirmStartQuiz}
+          />
+        )}
+      </>
     );
   }
 
   // Экран викторины
   if (screen === 'quiz' && selectedCategory) {
-    const questions = quizData.questions[selectedCategory];
+    const questions = sessionQuestions ?? [];
     const currentQuestion = questions[currentQuestionIndex];
     const category = quizData.categories.find(c => c.id === selectedCategory);
 
-    if (!category) return null;
+    if (!category || !currentQuestion) return null;
 
     return (
-      <QuizScreen
-        category={category}
-        currentQuestion={currentQuestion}
-        currentQuestionIndex={currentQuestionIndex}
-        totalQuestions={questions.length}
-        score={score}
-        showExplanation={showExplanation}
-        selectedAnswer={selectedAnswer}
-        isCorrect={isCorrect}
-        onAnswer={handleAnswer}
-        onNext={handleNext}
-        onGoHome={handleGoHome}
-      />
-    );
-  }
-
-  // Экран результатов
-  if (screen === 'result' && selectedCategory) {
-    const questions = quizData.questions[selectedCategory];
-    const category = quizData.categories.find(c => c.id === selectedCategory);
-
-    if (!category) return null;
-
-    return (
-      <ResultScreen
-        category={category}
-        score={score}
-        totalQuestions={questions.length}
-        onRetry={() => handleStartQuiz(selectedCategory)}
-        onGoHome={handleGoHome}
-      />
+      <>
+        <QuizScreen
+          category={category}
+          currentQuestion={currentQuestion}
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={questions.length}
+          score={score}
+          showExplanation={showExplanation}
+          selectedAnswer={selectedAnswer}
+          isCorrect={isCorrect}
+          onAnswer={handleAnswer}
+          onNext={handleNext}
+          onGoHome={handleGoHome}
+        />
+        {showResultModal && (
+          <ResultModal
+            category={category}
+            score={score}
+            totalQuestions={questions.length}
+            onRetry={() => handleStartQuiz(selectedCategory)}
+            onGoHome={handleGoHome}
+            onClose={() => setShowResultModal(false)}
+          />
+        )}
+      </>
     );
   }
 

@@ -89,41 +89,44 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 				</div>
 
 				{showExplanation && (
-					<div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-						<div className="flex items-center gap-3 mb-4">
-							{isCorrect ? (
-								<>
-									<CheckCircle className="text-emerald-600" size={32} />
-									<h3 className="text-2xl font-bold text-emerald-600">Правильно! 🎉</h3>
-								</>
-							) : (
-								<>
-									<XCircle className="text-red-600" size={32} />
-									<h3 className="text-2xl font-bold text-red-600">Неправильно</h3>
-								</>
-							)}
-						</div>
-
-						<p className="text-slate-700 leading-relaxed mb-4">
-							{currentQuestion.explanation}
-						</p>
-
-						{!isCorrect && (
-							<div className="text-slate-700 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-								<div className="font-semibold mb-1">Правильный ответ:</div>
-								<div>
-									<span className="font-bold text-slate-800">{correctLetter}.</span>
-									<span className="ml-2 text-slate-800">{correctText}</span>
-								</div>
+					<div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+						<div className="absolute inset-0 bg-black/50" />
+						<div className="relative z-10 w-full sm:max-w-2xl sm:mx-auto bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl p-6">
+							<div className="flex items-center gap-3 mb-4">
+								{isCorrect ? (
+									<>
+										<CheckCircle className="text-emerald-600" size={28} />
+										<h3 className="text-xl sm:text-2xl font-bold text-emerald-600">Правильно! 🎉</h3>
+									</>
+								) : (
+									<>
+										<XCircle className="text-red-600" size={28} />
+										<h3 className="text-xl sm:text-2xl font-bold text-red-600">Неправильно</h3>
+									</>
+								)}
 							</div>
-						)}
 
-						<button
-							onClick={onNext}
-							className="w-full bg-gradient-to-r from-slate-600 to-slate-700 text-white p-4 rounded-xl font-semibold hover:shadow-lg transition-all"
-						>
-							{currentQuestionIndex < totalQuestions - 1 ? 'Следующий вопрос' : 'Завершить'}
-						</button>
+							<p className="text-slate-700 leading-relaxed mb-4">
+								{currentQuestion.explanation}
+							</p>
+
+							{!isCorrect && (
+								<div className="text-slate-700 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+									<div className="font-semibold mb-1">Правильный ответ:</div>
+									<div>
+										<span className="font-bold text-slate-800">{correctLetter}.</span>
+										<span className="ml-2 text-slate-800">{correctText}</span>
+									</div>
+								</div>
+							)}
+
+							<button
+								onClick={onNext}
+								className="w-full bg-gradient-to-r from-slate-600 to-slate-700 text-white p-4 rounded-xl font-semibold hover:shadow-lg transition-all"
+							>
+								{currentQuestionIndex < totalQuestions - 1 ? 'Следующий вопрос' : 'Завершить'}
+							</button>
+						</div>
 					</div>
 				)}
 			</div>
