@@ -27,7 +27,7 @@ export const ThemeToggle: React.FC = () => {
 			type="button"
 			onClick={toggle}
 			aria-label={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
-			className="fixed top-4 right-4 z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow hover:shadow-md transition-colors"
+			className="fixed top-4 right-4 z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 shadow hover:shadow-md transition-colors [.relative_&]:absolute [.relative_&]:top-2 [.relative_&]:right-2"
 		>
 			{theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
 		</button>
