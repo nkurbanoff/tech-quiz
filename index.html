@@ -20,7 +20,7 @@
         <link rel="manifest" href="/manifest.json">
 
         <!-- Apple Touch Icon -->
-        <link rel="apple-touch-icon" href="/icon-192.png">
+        <link rel="apple-touch-icon" href="/tech-quiz/icon-192.png">
 
         <title>Tech Quiz - Подготовка к собеседованиям</title>
     </head>
@@ -35,7 +35,7 @@
         <script>
             if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
+          navigator.serviceWorker.register('/tech-quiz/sw.js')
             .then(registration => {
               console.log('Service Worker зарегистрирован:', registration.scope);
             })

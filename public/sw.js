@@ -1,9 +1,9 @@
 const CACHE_NAME = 'tech-quiz-v1';
+const BASE_PATH = '/tech-quiz';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/data/quiz-data.json'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/manifest.json`
 ];
 
 // Установка Service Worker
