@@ -33,10 +33,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 						<button
 							key={cat.id}
 							onClick={() => onStartQuiz(cat.id)}
-							className={`${cat.color} p-8 rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200`}
+							className={`${cat.color} p-4 rounded-2xl shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-200`}
 						>
-							<div className="text-6xl mb-3">{cat.icon}</div>
-							<div className="text-2xl font-bold text-white mb-2">{cat.name}</div>
+							<div className="text-4xl mb-2">{cat.icon}</div>
+							<div className="text-xl font-bold text-white mb-1">{cat.name}</div>
 							<div className="text-white/90">
 								{questionsCount[cat.id] || 0} вопросов
 							</div>
