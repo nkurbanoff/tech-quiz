@@ -4,6 +4,7 @@ import { QuizScreen } from './components/QuizScreen';
 import { QuizDataService } from './services/QuizDataService';
 import { ResultModal } from './components/ResultModal';
 import { QuestionCountModal } from './components/QuestionCountModal';
+import { ThemeToggle } from './components/ThemeToggle';
 import type { QuizData, Question } from './types/quiz.types';
 
 type Screen = 'home' | 'quiz';
@@ -291,8 +292,9 @@ function App() {
 
   if (isLoading || !quizData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-        <div className="text-slate-700 text-xl">Загрузка...</div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center transition-colors">
+        <ThemeToggle />
+        <div className="text-slate-700 dark:text-slate-200 text-xl">Загрузка...</div>
       </div>
     );
   }

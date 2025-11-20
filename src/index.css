@@ -6,8 +6,10 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 15px;
+  /* уменьшен базовый размер шрифта */
 
-  color-scheme: light;
+  color-scheme: light dark;
   color: rgba(15, 23, 42, 0.87);
   background-color: #f8fafc;
 
@@ -15,6 +17,11 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
 }
 
 body {

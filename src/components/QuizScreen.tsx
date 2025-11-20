@@ -1,6 +1,7 @@
 import React from 'react';
 import { Home, CheckCircle, XCircle } from 'lucide-react';
 import type { Question, Category } from '../types/quiz.types';
+import { ThemeToggle } from './ThemeToggle';
 
 interface QuizScreenProps {
 	category: Category;
@@ -36,7 +37,8 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 	const correctLetter = String.fromCharCode(65 + correctIndex);
 	const correctText = currentQuestion.options[correctIndex];
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 p-6">
+		<div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 p-6 transition-colors">
+			<ThemeToggle />
 			<div className="max-w-3xl mx-auto">
 				<div className="flex justify-between items-center mb-6">
 					<button
@@ -53,12 +55,12 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 					</div>
 				</div>
 
-				<div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
+				<div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 mb-6 transition-colors">
 					<div className={`inline-block ${category.color} text-white px-4 py-2 rounded-lg mb-4`}>
 						{category.icon} {category.name}
 					</div>
 
-					<h2 className="text-2xl font-bold text-slate-800 mb-6">
+					<h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-6">
 						{currentQuestion.question}
 					</h2>
 
@@ -70,18 +72,18 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 								disabled={showExplanation}
 								className={`w-full p-4 rounded-xl text-left transition-all ${showExplanation
 									? index === currentQuestion.correct
-										? 'bg-emerald-50 border-2 border-emerald-500'
+										? 'bg-emerald-50 border-2 border-emerald-500 dark:bg-emerald-900/30'
 										: selectedAnswer === index
-											? 'bg-red-50 border-2 border-red-500'
-											: 'bg-slate-50'
-									: 'bg-slate-50 hover:bg-slate-100 hover:shadow-md'
+											? 'bg-red-50 border-2 border-red-500 dark:bg-red-900/30'
+											: 'bg-slate-50 dark:bg-slate-700'
+									: 'bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 hover:shadow-md'
 									}`}
 							>
 								<div className="flex items-center gap-3">
-									<span className="font-bold text-slate-600">
+									<span className="font-bold text-slate-600 dark:text-slate-300">
 										{String.fromCharCode(65 + index)}.
 									</span>
-									<span className="text-slate-800">{option}</span>
+									<span className="text-slate-800 dark:text-slate-100">{option}</span>
 								</div>
 							</button>
 						))}
@@ -91,7 +93,7 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 				{showExplanation && (
 					<div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
 						<div className="absolute inset-0 bg-black/50" />
-						<div className="relative z-10 w-full sm:max-w-2xl sm:mx-auto bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl p-6">
+						<div className="relative z-10 w-full sm:max-w-2xl sm:mx-auto bg-white dark:bg-slate-800 rounded-t-2xl sm:rounded-2xl shadow-2xl p-6 transition-colors">
 							<div className="flex items-center gap-3 mb-4">
 								{isCorrect ? (
 									<>
@@ -106,16 +108,16 @@ export const QuizScreen: React.FC<QuizScreenProps> = ({
 								)}
 							</div>
 
-							<p className="text-slate-700 leading-relaxed mb-4">
+							<p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
 								{currentQuestion.explanation}
 							</p>
 
 							{!isCorrect && (
-								<div className="text-slate-700 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+								<div className="text-slate-700 dark:text-slate-300 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700 rounded-lg p-4 mb-4">
 									<div className="font-semibold mb-1">Правильный ответ:</div>
 									<div>
-										<span className="font-bold text-slate-800">{correctLetter}.</span>
-										<span className="ml-2 text-slate-800">{correctText}</span>
+										<span className="font-bold text-slate-800 dark:text-slate-100">{correctLetter}.</span>
+										<span className="ml-2 text-slate-800 dark:text-slate-100">{correctText}</span>
 									</div>
 								</div>
 							)}
